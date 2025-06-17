@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NivaranX™</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--p:#0af;--s:#555;--a:#f46;--d:#1a1a1a;--l:#eee;--cb:#282828;--cbd:#444;--ib:#3a3a3a;--ibd:#555}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Poppins',sans-serif;background:var(--d);color:var(--l);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+        h1,h2,h3{font-weight:700;color:var(--l);text-align:center;margin-bottom:15px}
+        h2{font-size:1.5rem}h3{font-size:1.3rem;margin-top:20px;margin-bottom:15px;text-align:left}
+        .cont{max-width:100%;padding:0;flex:1;display:flex;flex-direction:column}
+        .head{padding:15px;background:#121212;position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 5px rgba(0,0,0,.3)}
+        .head h1{font-size:1.6rem;flex-grow:1;text-align:center;color:var(--p)}
+        .h-icns{display:flex;align-items:center}
+        .h-icn{color:var(--l);font-size:1.3rem;margin-left:15px;cursor:pointer}
+        .main{flex:1;padding:15px;max-width:800px;margin:0 auto;width:100%}
+        .sec{display:none;animation:fadeIn .5s ease-in-out}
+        .sec.active{display:block}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        .w-card{background:var(--cb);border-radius:8px;padding:20px;margin-bottom:20px;border:1px solid var(--cbd);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+        .w-card h2{font-size:1.4rem;margin-bottom:10px;text-align:left}
+        .w-card p{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:15px}
+        .q-acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px}
+        .q-act{background:#333;border-radius:6px;padding:12px;text-align:center;font-size:.75rem;font-weight:600;cursor:pointer;transition:background .2s ease;border:1px solid #555;color:var(--l)}
+        .q-act:hover{background:#444}
+        .q-act i{display:block;font-size:1.2rem;margin-bottom:8px;color:var(--p)}
+        .cat-s{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+        .cat-c{background:var(--cb);border-radius:8px;border:1px solid var(--cbd);padding:15px 10px;text-align:center;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+        .cat-c:hover{transform:translateY(-3px);box-shadow:0 4px 10px rgba(0,0,0,.3)}
+        .cat-i{font-size:2rem;color:var(--p);margin-bottom:8px}
+        .cat-n{font-size:.85rem;font-weight:600;color:var(--l)}
+        .back-btn{background:none;border:none;color:var(--p);font-size:.95rem;margin-bottom:15px;display:flex;align-items:center;cursor:pointer;padding:5px;border-radius:5px;transition:background .2s ease}
+        .back-btn:hover{background:rgba(0,170,255,.1)}
+        .back-btn i{margin-right:8px}
+        .srch-c{margin:15px 0;position:relative}
+        .srch-i{width:100%;padding:12px 12px 12px 40px;border-radius:20px;border:1px solid var(--ibd);background:var(--ib);color:var(--l);font-size:.9rem;transition:border-color .2s ease}
+        .srch-i:focus{border-color:var(--p);outline:none}
+        .srch-icn{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--s);font-size:1.1rem}
+        .svc-l{list-style:none;padding:0}
+        .svc-l li{margin-bottom:8px}
+        .svc-l a{display:flex;align-items:center;padding:12px;color:var(--l);border-radius:6px;background:var(--cb);text-decoration:none;border:1px solid var(--cbd);transition:background .2s ease}
+        .svc-l a:hover{background:#333}
+        .svc-l i{margin-right:12px;color:var(--p);font-size:1.1rem}
+        .svc-d{background:var(--cb);border-radius:8px;padding:20px;margin-top:20px;border:1px solid var(--cbd);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+        .svc-d h3{font-size:1.3rem;margin-bottom:10px;text-align:left}
+        .svc-d p,.svc-d ul{font-size:.9rem;color:rgba(255,255,255,.8);margin-bottom:10px}
+        .svc-d ul{padding-left:20px}
+        .svc-d li{margin-bottom:5px}
+        .svc-d a{color:var(--a);text-decoration:none;font-weight:600;transition:color .2s ease}
+        .svc-d a:hover{color:#f68}
+        .part-form{background:var(--cb);border-radius:8px;padding:20px;margin-top:20px;border:1px solid var(--cbd);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+        .part-form label{display:block;margin-bottom:8px;font-weight:600;color:var(--l)}
+        .part-form input,.part-form textarea{width:100%;padding:10px;margin-bottom:15px;border-radius:5px;border:1px solid var(--ibd);background:var(--ib);color:var(--l);font-size:.9rem}
+        .part-form button{background:var(--p);color:var(--d);border:none;padding:12px 20px;border-radius:5px;cursor:pointer;font-size:1rem;font-weight:700;transition:background .2s ease}
+        .part-form button:hover{background:#0cf}
+        .footer{padding:15px;text-align:center;background:#121212;font-size:.75rem;color:rgba(255,255,255,.5);margin-top:auto}
+        @media (max-width:480px){.head h1{font-size:1.4rem}.h-icn{font-size:1.1rem;margin-left:10px}.main{padding:10px}.w-card{padding:15px}.w-card h2{font-size:1.2rem}.q-acts{grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:8px}.q-act{padding:10px;font-size:.7rem}.q-act i{font-size:1rem;margin-bottom:5px}h3{font-size:1.1rem;margin-top:15px;margin-bottom:10px}.cat-s{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}.cat-c{padding:12px 8px}.cat-i{font-size:1.8rem}.cat-n{font-size:.75rem}.srch-i{padding:10px 10px 10px 35px;font-size:.85rem}.srch-icn{left:10px;font-size:1rem}.svc-l a{padding:10px}.svc-l i{margin-right:10px;font-size:1rem}.svc-d{padding:15px}.svc-d h3{font-size:1.1rem}.svc-d p,.svc-d ul{font-size:.85rem}.footer{padding:10px;font-size:.7rem}}
+    </style>
+</head>
+<body>
+    <div class="cont">
+        <header class="head">
+            <h1>NivaranX™</h1>
+            <div class="h-icns">
+                 <i class="fas fa-search h-icn" id="g-srch-icn"></i>
+                 <i class="fas fa-headset h-icn" id="sup-icn"></i>
+            </div>
+            <div class="srch-c" id="g-srch-c" style="display: none; width: 100%; position: absolute; top: 60px; left: 0; background: #1a1a1a; padding: 10px 15px;">
+                <i class="fas fa-search srch-icn"></i>
+                <input type="text" class="srch-i" id="g-srch-i" placeholder="Search all services...">
+            </div>
+        </header>
+        <main class="main">
+            <section class="sec active" id="homeSec">
+                <div class="w-card">
+                    <h2>WELCOME TO NIVARANX™</h2>
+                    <p>YOUR ONE-STOP SOLUTION FOR ALL GOVERNMENT AND PRIVATE SERVICES. GET ASSISTANCE WITH DOCUMENTS, APPLICATIONS, AND MORE.</p>
+                    <div class="q-acts">
+                        <div class="q-act" data-svc="pan" data-sec="national"><i class="fas fa-address-card"></i> PAN CARD</div>
+                        <div class="q-act" data-svc="aadhaar" data-sec="national"><i class="fas fa-id-badge"></i> AADHAR CARD</div>
+                        <div class="q-act" data-svc="voter" data-sec="national"><i class="fas fa-vote-yea"></i> VOTER CARD</div>
+                         <div class="q-act" id="refer-btn"><i class="fas fa-user-friends"></i> REFER A FRIEND</div>
+                    </div>
+                </div>
+                <h3>OUR SERVICES</h3>
+                <div class="cat-s">
+                    <div class="cat-c" data-sec="national"><div class="cat-i"><i class="fas fa-globe-asia"></i></div><div class="cat-n">NATIONAL</div></div>
+                    <div class="cat-c" data-sec="state"><div class="cat-i"><i class="fas fa-landmark"></i></div><div class="cat-n">STATES</div></div>
+                    <div class="cat-c" data-sec="tax"><div class="cat-i"><i class="fas fa-receipt"></i></div><div class="cat-n">TAXES</div></div>
+                    <div class="cat-c" data-sec="banking"><div class="cat-i"><i class="fas fa-university"></i></div><div class="cat-n">BANKING</div></div>
+                    <div class="cat-c" data-sec="insurance"><div class="cat-i"><i class="fas fa-shield-alt"></i></div><div class="cat-n">INSURANCE</div></div>
+                    <div class="cat-c" data-sec="loans"><div class="cat-i"><i class="fas fa-hand-holding-usd"></i></div><div class="cat-n">LOANS</div></div>
+                    <div class="cat-c" data-sec="booking"><div class="cat-i"><i class="fas fa-calendar-check"></i></div><div class="cat-n">BOOKING</div></div>
+                    <div class="cat-c" data-sec="design"><div class="cat-i"><i class="fas fa-paint-brush"></i></div><div class="cat-n">DESIGNS</div></div>
+                    <div class="cat-c" data-sec="partner"><div class="cat-i"><i class="fas fa-handshake"></i></div><div class="cat-n">JOIN AS A PARTNER</div></div>
+                </div>
+            </section>
+            <section class="sec" id="nationalSec">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2>National Services</h2>
+                <ul class="svc-l">
+                    <li><a href="#" data-svc="voter"><i class="fas fa-vote-yea"></i> Voter ID</a></li>
+                    <li><a href="#" data-svc="ration"><i class="fas fa-address-card"></i> Ration Card</a></li>
+                    <li><a href="#" data-svc="pan"><i class="fas fa-address-card"></i> PAN Card</a></li>
+                    <li><a href="#" data-svc="aadhaar"><i class="fas fa-id-badge"></i> Aadhaar Card</a></li>
+                    <li><a href="#" data-svc="passport"><i class="fas fa-passport"></i> Passport</a></li>
+                    <li><a href="#" data-svc="driving"><i class="fas fa-car"></i> Driving Licence</a></li>
+                    <li><a href="#" data-svc="udyam"><i class="fas fa-industry"></i> UDYAM Registration</a></li>
+                    <li><a href="#" data-svc="pmay"><i class="fas fa-home"></i> PMAY Scheme</a></li>
+                </ul>
+                 <div class="svc-d" id="nationalDet"></div>
+            </section>
+            <section class="sec" id="stateSec">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2>State Services</h2>
+                <ul class="svc-l">
+                    <li><a href="#" data-svc="birth"><i class="fas fa-baby"></i> Birth Certificate</a></li>
+                    <li><a href="#" data-svc="death"><i class="fas fa-cross"></i> Death Certificate</a></li>
+                    <li><a href="#" data-svc="caste"><i class="fas fa-file-alt"></i> Caste Certificate</a></li>
+                    <li><a href="#" data-svc="income"><i class="fas fa-money-bill-wave"></i> Income Certificate</a></li>
+                    <li><a href="#" data-svc="domicile"><i class="fas fa-home"></i> Domicile Certificate</a></li>
+                    <li><a href="#" data-svc="disability"><i class="fas fa-wheelchair"></i> Disability Certificate</a></li>
+                    <li><a href="#" data-svc="labor"><i class="fas fa-hard-hat"></i> Labor Registration</a></li>
+                    <li><a href="#" data-svc="marriage"><i class="fas fa-ring"></i> Marriage Certificate</a></li>
+                    <li><a href="#" data-svc="pension"><i class="fas fa-piggy-bank"></i> Pension Scheme</a></li>
+                </ul>
+                 <div class="svc-d" id="stateDet"></div>
+            </section>
+            <section class="sec" id="taxSec">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2>Tax Services</h2>
+                <ul class="svc-l">
+                    <li><a href="#" data-svc="itr"><i class="fas fa-file-invoice"></i> ITR Filing</a></li>
+                    <li><a href="#" data-svc="pan_correction"><i class="fas fa-address-card"></i> PAN Correction</a></li>
+                    <li><a href="#" data-svc="tan"><i class="fas fa-file-alt"></i> TAN Application</a></li>
+                    <li><a href="#" data-svc="gst_reg"><i class="fas fa-file-invoice-dollar"></i> GST Registration</a></li>
+                    <li><a href="#" data-svc="gst_filing"><i class="fas fa-file-invoice"></i> GST Filing</a></li>
+                    <li><a href="#" data-svc="tds"><i class="fas fa-receipt"></i> TDS Return</a></li>
+                    <li><a href="#" data-svc="advance_tax"><i class="fas fa-money-bill"></i> Advance Tax Payment</a></li>
+                    <li><a href="#" data-svc="refund"><i class="fas fa-undo"></i> Tax Refund Status</a></li>
+                </ul>
+                 <div class="svc-d" id="taxDet"></div>
+            </section>
+            <section class="sec" id="businessSec">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2>Business Services</h2>
+                <ul class="svc-l">
+                    <li><a href="#" data-svc="business_reg"><i class="fas fa-store"></i> Business Registration</a></li>
+                    <li><a href="#" data-svc="msme"><i class="fas fa-building"></i> MSME Registration</a></li>
+                    <li><a href="#" data-svc="shop_act"><i class="fas fa-store-alt"></i> Shop Act License</a></li>
+                    <li><a href="#" data-svc="fssai"><i class="fas fa-utensils"></i> FSSAI License</a></li>
+                    <li><a href="#" data-svc="iec"><i class="fas fa-globe"></i> IEC Code</a></li>
+                    <li><a href="#" data-svc="dsc"><i class="fas fa-signature"></i> Digital Signature (DSC)</a></li>
+                    <li><a href="#" data-svc="startup"><i class="fas fa-rocket"></i> Startup India Registration</a></li>
+                    <li><a href="#" data-svc="ca"><i class="fas fa-calculator"></i> CA Services</a></li>
+                    <li><a href="#" data-svc="iso"><i class="fas fa-certificate"></i> ISO Certification</a></li>
+                </ul>
+                 <div class="svc-d" id="businessDet"></div>
+            </section>
+             <section class="sec" id="bankingSec">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2>Banking Services</h2>
+                <ul class="svc-l">
+                    <li><a href="#" data-svc="savings"><i class="fas fa-wallet"></i> Savings Account</a></li>
+                    <li><a href="#" data-svc="current"><i class="fas fa-business-time"></i> Current Account</a></li>
+                    <li><a href="#" data-svc="fd"><i class="fas fa-coins"></i> Fixed Deposit (FD)</a></li>
+                    <li><a href="#" data-svc="mutual"><i class="fas fa-chart-line"></i> Mutual Fund Investment</a></li>
+                    <li><a href="#" data-svc="cards"><i class="fas fa-credit-card"></i> Debit/Credit Cards</a></li>
+                </ul>
+                 <div class="svc-d" id="bankingDet"></div>
+            </section>
+             <section class="sec" id="loansSec">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2>Loan Services</h2>
+                <ul class="svc-l">
+                    <li><a href="#" data-svc="home_loan"><i class="fas fa-home"></i> Home Loan</a></li>
+                    <li><a href="#" data-svc="personal_loan"><i class="fas fa-user-tie"></i> Personal Loan</a></li>
+                    <li><a href="#" data-svc="business_loan"><i class="fas fa-briefcase"></i> Business Loan</a></li>
+                     <li><a href="#" data-svc="emi"><i class="fas fa-file-invoice"></i> EMI Calculation/Payment</a></li>
+                </ul>
+                 <div class="svc-d" id="loansDet"></div>
+            </section>
+            <section class="sec" id="insuranceSec">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2>Insurance Services</h2>
+                <ul class="svc-l">
+                    <li><a href="#" data-svc="jeevan"><i class="fas fa-heartbeat"></i> Pradhan Mantri Jeevan Jyoti Bima Yojana</a></li>
+                    <li><a href="#" data-svc="suraksha"><i class="fas fa-shield-alt"></i> Pradhan Mantri Suraksha Bima Yojana</a></li>
+                    <li><a href="#" data-svc="ayushman"><i class="fas fa-id-card"></i> Ayushman Bharat Card</a></li>
+                    <li><a href="#" data-svc="health_ins"><i class="fas fa-procedures"></i> Health Insurance</a></li>
+                    <li><a href="#" data-svc="life_ins"><i class="fas fa-life-ring"></i> Life Insurance</a></li>
+                    <li><a href="#" data-svc="vehicle_ins"><i class="fas fa-car"></i> Vehicle Insurance</a></li>
+                    <li><a href="#" data-svc="lic"><i class="fas fa-file-invoice"></i> LIC Premium Payment</a></li>
+                </ul>
+                 <div class="svc-d" id="insuranceDet"></div>
+            </section>
+            <section class="sec" id="bookingSec">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2>Booking Services</h2>
+                <ul class="svc-l">
+                    <li><a href="#" data-svc="train"><i class="fas fa-train"></i> Train Tickets</a></li>
+                    <li><a href="#" data-svc="bus"><i class="fas fa-bus"></i> Bus Tickets</a></li>
+                    <li><a href="#" data-svc="flight"><i class="fas fa-plane"></i> Flight Tickets</a></li>
+                    <li><a href="#" data-svc="movie"><i class="fas fa-film"></i> Movie Tickets</a></li>
+                    <li><a href="#" data-svc="hotel"><i class="fas fa-hotel"></i> Hotel Booking</a></li>
+                    <li><a href="#" data-svc="event"><i class="fas fa-ticket-alt"></i> Event Tickets</a></li>
+                </ul>
+                 <div class="svc-d" id="bookingDet"></div>
+            </section>
+             <section class="sec" id="utilitiesSec">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2>Utility Bill Payments</h2>
+                <ul class="svc-l">
+                    <li><a href="#" data-svc="electricity"><i class="fas fa-lightbulb"></i> Electricity Bill</a></li>
+                    <li><a href="#" data-svc="water"><i class="fas fa-tint"></i> Water Bill</a></li>
+                    <li><a href="#" data-svc="gas"><i class="fas fa-fire"></i> Gas Bill</a></li>
+                    <li><a href="#" data-svc="mobile"><i class="fas fa-mobile-alt"></i> Mobile Recharge</a></li>
+                    <li><a href="#" data-svc="dth"><i class="fas fa-tv"></i> DTH Recharge</a></li>
+                    <li><a href="#" data-svc="loan_emi"><i class="fas fa-file-invoice"></i> Loan EMI Payment</a></li>
+                    <li><a href="#" data-svc="fastag"><i class="fas fa-road"></i> Fastag Recharge</a></li>
+                    <li><a href="#" data-svc="broadband"><i class="fas fa-wifi"></i> Broadband Bill</a></li>
+                </ul>
+                 <div class="svc-d" id="utilitiesDet"></div>
+            </section>
+            <section class="sec" id="designSec">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2>Design Services</h2>
+                <ul class="svc-l">
+                    <li><a href="#" data-svc="logo"><i class="fas fa-icons"></i> Logo Design</a></li>
+                    <li><a href="#" data-svc="banner"><i class="fas fa-image"></i> Banner Design</a></li>
+                    <li><a href="#" data-svc="visiting"><i class="fas fa-id-card"></i> Visiting Card Design</a></li>
+                    <li><a href="#" data-svc="social"><i class="fas fa-share-alt"></i> Social Media Post Design</a></li>
+                    <li><a href="#" data-svc="typing"><i class="fas fa-keyboard"></i> Document Typing</a></li>
+                    <li><a href="#" data-svc="pdf"><i class="fas fa-file-pdf"></i> PDF Editing</a></li>
+                    <li><a href="#" data-svc="form"><i class="fas fa-file-alt"></i> Form Filling Assistance</a></li>
+                    <li><a href="#" data-svc="resume"><i class="fas fa-file-word"></i> Resume/CV Design</a></li>
+                    <li><a href="#" data-svc="templates"><i class="fas fa-certificate"></i> Custom Templates</a></li>
+                </ul>
+                 <div class="svc-d" id="designDet"></div>
+            </section>
+            <section class="sec" id="partnerSec">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2>Join As a Partner</h2>
+                <div class="part-form">
+                    <p style="margin-bottom: 15px; color: rgba(255, 255, 255, 0.8);">Join the digital revolution with just a smartphone and internet connection. No physical office needed - operate from anywhere in your city!</p>
+                    <p style="margin-bottom: 15px; color: rgba(255, 255, 255, 0.8);">Smart Phone (High-end Camera)<br>High-Speed Internet Connection<br>Power Bank for Mobile Operations<br>100% Virtual Setup - Work From Anywhere</p>
+                    <p style="margin-bottom: 15px; color: rgba(255, 255, 255, 0.8);">We provide: AI-powered Digital Marketing Kits, Virtual Reality Training, and IdentityCard.</p>
+                    <p style="margin-bottom: 20px; color: var(--p); font-weight: bold;">Franchise Fee: ₹599 + 18% GST = ₹706.82</p>
+
+                    <label for="p-name">Name:</label>
+                    <input type="text" id="p-name" placeholder="Your Name">
+                    <label for="p-email">Email:</label>
+                    <input type="email" id="p-email" placeholder="Your Email">
+                    <label for="p-phone">Phone Number:</label>
+                    <input type="tel" id="p-phone" placeholder="Your Phone Number">
+                     <label for="p-city">City:</label>
+                    <input type="text" id="p-city" placeholder="Your City">
+                     <label for="p-state">State:</label>
+                    <input type="text" id="p-state" placeholder="Your State">
+                     <label for="p-zip">Zip Code:</label>
+                    <input type="text" id="p-zip" placeholder="Your Zip Code">
+                    <label for="p-rcode">Refer Code:</label>
+                    <input type="text" id="p-rcode" placeholder="Enter Refer Code (Optional)">
+                    <label for="p-why">Why join NivaranX™?</label>
+                    <textarea id="p-why" rows="4" placeholder="Tell us about your interest..."></textarea>
+
+                    <button id="send-p-wa">Send via WhatsApp</button>
+                </div>
+            </section>
+        </main>
+        <footer class="footer">
+            <p>© 2025 NivaranX™ - UPADHYAYG GROUP</p>
+        </footer>
+    </div>
+    <script>
+        const serviceData={voter:{name:"Voter ID",desc:"ID for voting.",process:["Apply on NVSP.","Submit docs.","Verify.","Get card."],docs:["Aadhaar","Photo"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Voter%20ID*%20banane%20mein%20meri%20help%20karen!"},ration:{name:"Ration Card",desc:"Subsidized food.",process:["Apply at PDS.","Submit docs.","Verify.","Collect."],docs:["Aadhaar","Address"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Ration%20Card*%20banane%20mein%20meri%20help%20karen!"},pan:{name:"PAN Card",desc:"Tax ID.",process:["Apply on NSDL.","Submit docs.","Pay.","Get card."],docs:["Aadhaar","Photo"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*PAN%20Card*%20banane%20mein%20meri%20help%20karen!"},aadhaar:{name:"Aadhaar Card",desc:"Unique ID.",process:["Visit center.","Submit docs.","Biometrics.\\n","Get card."],docs:["Address","ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Aadhaar%20Card*%20banane%20mein%20meri%20help%20karen!"},passport:{name:"Passport",desc:"Travel ID.",process:["Apply on Seva.","Book slot.","Submit docs.","Get passport."],docs:["Aadhaar","Birth Cert"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Passport*%20banane%20mein%20meri%20help%20karen!"},driving:{name:"Driving Licence",desc:"Drive permit.",process:["Apply on Sarathi.","Submit docs.","Test.","Get DL."],docs:["Aadhaar","Age"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Driving%20Licence*%20banane%20mein%20meri%20help%20karen!"},udyam:{name:"UDYAM Registration",desc:"MSME reg.",process:["Apply on Udyam.","Submit docs.","Verify.","Get cert."],docs:["Aadhaar","PAN"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*UDYAM*%20mein%20meri%20help%20karen!"},pmay:{name:"PMAY Scheme",desc:"Housing aid.",process:["Apply on PMAY.","Submit docs.","Verify.","Get aid."],docs:["Aadhaar","Income"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*PMAY*%20mein%20meri%20help%20karen!"},birth:{name:"Birth Certificate",desc:"Birth record.",process:["Apply at municipal.","Submit docs.","Verify.","Get cert."],docs:["Hospital","ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Birth%20Cert*%20banane%20mein%20meri%20help%20karen!"},death:{name:"Death Certificate",desc:"Death record.",process:["Apply at municipal.","Submit docs.","Verify.","Get cert."],docs:["Hospital","ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Death%20Cert*%20banane%20mein%20meri%20help%20karen!"},caste:{name:"Caste Certificate",desc:"Reservation proof.",process:["Apply at tehsil.","Submit docs.","Verify.","Get cert."],docs:["Aadhaar","Caste"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Caste%20Cert*%20banane%20mein%20meri%20help%20karen!"},income:{name:"Income Certificate",desc:"Scheme proof.",process:["Apply at tehsil.","Submit docs.","Verify.","Get cert."],docs:["Aadhaar","Salary"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Income%20Cert*%20banane%20mein%20meri%20help%20karen!"},domicile:{name:"Domicile Certificate",desc:"Residency proof.",process:["Apply at SDM.","Submit docs.","Verify.","Get cert."],docs:["Aadhaar","Address"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Domicile*%20banane%20mein%20meri%20help%20karen!"},disability:{name:"Disability Certificate",desc:"Benefit cert.",process:["Get medical cert.","Apply.","Submit docs.","Get cert."],docs:["Aadhaar","Medical"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Disability*%20mein%20meri%20help%20karen!"},labor:{name:"Labor Registration",desc:"Welfare ID.",process:["Apply at labor dept.","Submit docs.","Verify.","Get ID."],docs:["Aadhaar","Job"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Labor%20Reg*%20mein%20meri%20help%20karen!"},marriage:{name:"Marriage Certificate",desc:"Marriage proof.",process:["Apply at registrar.","Submit docs.","Verify.","Get cert."],docs:["Aadhaar","Age"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Marriage%20Cert*%20banane%20mein%20meri%20help%20karen!"},pension:{name:"Pension Scheme",desc:"Elderly aid.",process:["Apply at portal.","Submit docs.","Verify.","Get pension."],docs:["Aadhaar","Age"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Pension*%20mein%20meri%20help%20karen!"},itr:{name:"ITR Filing",desc:"Tax return.",process:["File on portal.","Submit docs.","Verify.","Done."],docs:["PAN","Form 16"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*ITR%20Filing*%20mein%20meri%20help%20karen!"},pan_correction:{name:"PAN Correction",desc:"Update PAN.",process:["Apply on NSDL.","Submit docs.","Pay.","Get card."],docs:["PAN","Aadhaar"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*PAN%20Fix*%20mein%20meri%20help%20karen!"},tan:{name:"TAN Application",desc:"TDS ID.",process:["Apply on NSDL.","Submit docs.","Pay.","Get TAN."],docs:["Aadhaar","Biz"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*TAN*%20mein%20meri%20help%20karen!"},gst_reg:{name:"GST Registration",desc:"Biz tax ID.",process:["Apply on GST portal.","Submit docs.","Verify.","Get GSTIN."],docs:["PAN","Aadhaar"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*GST%20Reg*%20mein%20meri%20help%20karen!"},gst_filing:{name:"GST Filing",desc:"GST return.",process:["File on portal.","Submit data.","Pay.","Done."],docs:["GSTIN","Sales"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*GST%20Filing*%20mein%20meri%20help%20karen!"},tds:{name:"TDS Return",desc:"TDS return.",process:["File on portal.","Submit data.","Verify.","Done."],docs:["TAN","Receipts"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*TDS*%20mein%20meri%20help%20karen!"},advance_tax:{name:"Advance Tax Payment",desc:"Pay as earned.",process:["Calc tax.","Pay on portal.","Submit.","Done."],docs:["PAN","Income"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Advance%20Tax*%20mein%20meri%20help%20karen!"},refund:{name:"Tax Refund Status",desc:"Claim excess tax.",process:["File ITR.","Verify.","Track.","Get refund."],docs:["PAN","Bank"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Tax%20Refund*%20mein%20meri%20help%20karen!"},business_reg:{name:"Business Registration",desc:"Company reg.",process:["Apply on MCA.","Submit docs.","Verify.","Get cert."],docs:["PAN","Aadhaar"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Biz%20Reg*%20mein%20meri%20help%20karen!"},msme:{name:"MSME Registration",desc:"Small biz reg.",process:["Apply on Udyam.","Submit docs.","Verify.","Get cert."],docs:["Aadhaar","PAN"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*MSME*%20mein%20meri%20help%20karen!"},shop_act:{name:"Shop Act License",desc:"Shop license.",process:["Apply at labor.","Submit docs.","Inspect.","Get license."],docs:["Aadhaar","Biz"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Shop%20Act*%20mein%20meri%20help%20karen!"},fssai:{name:"FSSAI License",desc:"Food license.",process:["Apply on FoSCoS.","Submit docs.","Inspect.","Get license."],docs:["Aadhaar","Biz"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*FSSAI*%20mein%20meri%20help%20karen!"},iec:{name:"IEC Code",desc:"Import/export code.",process:["Apply on DGFT.","Submit docs.","Pay.","Get IEC."],docs:["PAN","Bank"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*IEC*%20mein%20meri%20help%20karen!"},dsc:{name:"Digital Signature (DSC)",desc:"Digital signature.",process:["Apply via CA.","Submit docs.","Verify.","Get DSC."],docs:["Aadhaar","PAN"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*DSC*%20mein%20meri%20help%20karen!"},startup:{name:"Startup India Registration",desc:"Startup reg.",process:["Apply on Startup India.","Submit docs.","Verify.","Get cert."],docs:["PAN","Plan"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Startup*%20mein%20meri%20help%20karen!"},ca:{name:"CA Services",desc:"Legal help.",process:["Contact CA.","Submit docs.","Consult.","Done."],docs:["Records"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*CA*%20mein%20meri%20help%20karen!"},iso:{name:"ISO Certification",desc:"Quality cert.",process:["Apply via agency.","Submit docs.","Audit.","Get cert."],docs:["Biz Docs"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*ISO*%20mein%20meri%20help%20karen!"},savings:{name:"Savings Account",desc:"Bank account.",process:["Apply at bank.","Submit KYC.","Verify.","Open."],docs:["Aadhaar","PAN"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Savings*%20mein%20meri%20help%20karen!"},current:{name:"Current Account",desc:"Biz account.",process:["Apply at bank.","Submit docs.","Verify.","Open."],docs:["PAN","Biz"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Current*%20mein%20meri%20help%20karen!"},fd:{name:"Fixed Deposit (FD)",desc:"Fixed deposit.",process:["Apply at bank.","Choose scheme.","Pay.","Get FD."],docs:["Aadhaar","PAN"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*FD*%20mein%20meri%20help%20karen!"},mutual:{name:"Mutual Fund Investment",desc:"Investment.",process:["Complete KYC.","Choose fund.","Pay.","Invest."],docs:["Aadhaar","PAN"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Mutual%20Fund*%20mein%20meri%20help%20karen!"},cards:{name:"Debit/Credit Cards",desc:"Debit/Credit.",process:["Apply at bank.","Submit docs.","Verify.","Get card."],docs:["Aadhaar","Income"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Cards*%20mein%20meri%20help%20karen!"},home_loan:{name:"Home Loan",desc:"Housing loan.",process:["Apply at bank.","Submit docs.","Verify.","Get loan."],docs:["Aadhaar","Property"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Home%20Loan*%20mein%20meri%20help%20karen!"},personal_loan:{name:"Personal Loan",desc:"Expense loan.",process:["Apply at bank.","Submit docs.","Verify.","Get loan."],docs:["Aadhaar","Salary"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Personal%20Loan*%20mein%20meri%20help%20karen!"},business_loan:{name:"Business Loan",desc:"Business loan.",process:["Apply at bank.","Submit docs.","Verify.","Get loan."],docs:["Aadhaar","Biz"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Biz%20Loan*%20mein%20meri%20help%20karen!"},emi:{name:"EMI Calculation/Payment",desc:"Loan payment.",process:["Check schedule.","Pay online.","Track.","Done."],docs:["Loan ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*EMI*%20mein%20meri%20help%20karen!"},jeevan:{name:"Pradhan Mantri Jeevan Jyoti Bima Yojana",desc:"Life insurance.",process:["Apply at bank.","Submit docs.","Pay.","Get policy."],docs:["Aadhaar","Bank"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Jeevan%20Bima*%20mein%20meri%20help%20karen!"},suraksha:{name:"Pradhan Mantri Suraksha Bima Yojana",desc:"Accident cover.",process:["Apply at bank.","Submit docs.","Pay.","Get policy."],docs:["Aadhaar","Bank"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Suraksha*%20mein%20meri%20help%20karen!"},ayushman:{name:"Ayushman Bharat Card",desc:"Health card.",process:["Apply at CSC.","Submit docs.","Verify.","Get card."],docs:["Aadhaar","Ration"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Ayushman*%20mein%20meri%20help%20karen!"},health_ins:{name:"Health Insurance",desc:"Medical cover.",process:["Apply at insurer.","Submit docs.","Pay.","Get policy."],docs:["Aadhaar","Medical"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Health%20Ins*%20mein%20meri%20help%20karen!"},life_ins:{name:"Life Insurance",desc:"Life cover.",process:["Apply at insurer.","Submit docs.","Test.","Get policy."],docs:["Aadhaar","Income"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Life%20Ins*%20mein%20meri%20help%20karen!"},vehicle_ins:{name:"Vehicle Insurance",desc:"Vehicle cover.",process:["Apply at insurer.","Submit docs.","Pay.","Get policy."],docs:["RC","Aadhaar"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Vehicle%20Ins*%20mein%20meri%20help%20karen!"},lic:{name:"LIC Premium Payment",desc:"LIC premiums.",process:["Login to LIC.","Pay premium.","Track.","Done."],docs:["Policy No"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*LIC*%20mein%20meri%20help%20karen!"},train:{name:"Train Tickets",desc:"Train tickets.",process:["Book on IRCTC.","Pay.","Get ticket."],docs:["ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Train*%20mein%20meri%20help%20karen!"},bus:{name:"Bus Tickets",desc:"Bus tickets.",process:["Book online.","Pay.","Get ticket."],docs:["ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Bus*%20mein%20meri%20help%20karen!"},flight:{name:"Flight Tickets",desc:"Flight tickets.",process:["Book online.","Pay.","Get ticket."],docs:["ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Flight*%20mein%20meri%20help%20karen!"},movie:{name:"Movie Tickets",desc:"Movie tickets.",process:["Book online.","Pay.","Get ticket."],docs:[],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Movie*%20mein%20meri%20help%20karen!"},hotel:{name:"Hotel Booking",desc:"Hotel booking.",process:["Book online.","Pay.","Get confirm."],docs:["ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Hotel*%20mein%20meri%20help%20karen!"},event:{name:"Event Tickets",desc:"Event tickets.",process:["Book online.","Pay.","Get ticket."],docs:[],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Event*%20mein%20meri%20help%20karen!"},electricity:{name:"Electricity Bill",desc:"Pay bill.",process:["Enter ID.","Pay online.","Get receipt."],docs:["Consumer No"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Electricity*%20mein%20meri%20help%20karen!"},water:{name:"Water Bill",desc:"Pay bill.",process:["Enter ID.","Pay online.","Get receipt."],docs:["Conn ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Water*%20mein%20meri%20help%20karen!"},gas:{name:"Gas Bill",desc:"Pay bill.",process:["Enter ID.","Pay online.","Get receipt."],docs:["Cust ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Gas*%20mein%20meri%20help%20karen!"},mobile:{name:"Mobile Recharge",desc:"Recharge.",process:["Enter no.","Pay.","Done."],docs:[],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Mobile*%20mein%20meri%20help%20karen!"},dth:{name:"DTH Recharge",desc:"Recharge.",process:["Enter ID.","Pay.","Done."],docs:["Sub ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*DTH*%20mein%20meri%20help%20karen!"},loan_emi:{name:"Loan EMI Payment",desc:"Pay EMI.",process:["Enter loan ID.","Pay.","Done."],docs:["Loan ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Loan%20EMI*%20mein%20meri%20help%20karen!"},fastag:{name:"Fastag Recharge",desc:"Recharge.",process:["Enter ID.","Pay.","Done."],docs:["Fastag ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Fastag*%20mein%20meri%20help%20karen!"},broadband:{name:"Broadband Bill",desc:"Pay bill.",process:["Enter ID.","Pay.","Done."],docs:["Acct ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Broadband*%20mein%20meri%20help%20karen!"},logo:{name:"Logo Design",desc:"Custom logo.",process:["Share brief.","Review.","Get logo."],docs:["Brief"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Logo*%20mein%20meri%20help%20karen!"},banner:{name:"Banner Design",desc:"Promo banner.",process:["Share brief.","Review.","Get banner."],docs:["Brief"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Banner*%20mein%20meri%20help%20karen!"},visiting:{name:"Visiting Card Design",desc:"Business card.",process:["Share details.","Review.","Get card."],docs:["Details"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Visiting%20Card*%20mein%20meri%20help%20karen!"},social:{name:"Social Media Post Design",desc:"Social graphics.",process:["Share brief.","Review.","Get post."],docs:["Brief"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Social%20Post*%20mein%20meri%20help%20karen!"},typing:{name:"Document Typing",desc:"Doc typing.",process:["Share doc.","Review.","Get file."],docs:["Doc"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Typing*%20mein%20meri%20help%20karen!"},pdf:{name:"PDF Editing",desc:"Edit PDF.",process:["Share PDF.","Review.","Get file."],docs:["PDF"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*PDF%20Edit*%20mein%20meri%20help%20karen!"},form:{name:"Form Filling Assistance",desc:"Form help.",process:["Share details.","Submit.","Done."],docs:["Docs"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Form%20Fill*%20mein%20meri%20help%20karen!"},resume:{name:"Resume/CV Design",desc:"Resume design.",process:["Share details.","Review.","Get resume."],docs:["Details"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Resume*%20mein%20meri%20help%20karen!"},templates:{name:"Custom Templates",desc:"Template design.",process:["Share brief.","Review.","Get template."],docs:["Brief"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Templates*%20mein%20meri%20help%20karen!"}};
+        const secs=document.querySelectorAll('.sec'),catCs=document.querySelectorAll('.cat-c'),qActs=document.querySelectorAll('.q-act'),backBtns=document.querySelectorAll('.back-btn'),svcLs=document.querySelectorAll('.svc-l a'),gSrchIcn=document.getElementById('g-srch-icn'),gSrchC=document.getElementById('g-srch-c'),gSrchI=document.getElementById('g-srch-i'),supIcn=document.getElementById('sup-icn'),sendPWABtn=document.getElementById('send-p-wa'),pNameI=document.getElementById('p-name'),pEmailI=document.getElementById('p-email'),pPhoneI=document.getElementById('p-phone'),pCityI=document.getElementById('p-city'),pStateI=document.getElementById('p-state'),pZipI=document.getElementById('p-zip'),pRcodeI=document.getElementById('p-rcode'),pWhyI=document.getElementById('p-why'),referBtn=document.getElementById('refer-btn');
+        let viewHist=['home'];
+        function showSec(secId){secs.forEach(sec=>sec.classList.remove('active'));document.getElementById(secId).classList.add('active');gSrchC.style.display='none';gSrchI.value='';resetSvcLs()}
+        function showSvcDet(secId,svcKey){const detDiv=document.getElementById(`${secId}Det`),s=serviceData[svcKey];if(s){detDiv.innerHTML=`<h3>${s.name}</h3><p><strong>Description:</strong> ${s.desc}</p><p><strong>Steps:</strong></p><ul>${s.process.map(step=>`<li>${step}</li>`).join('')}</ul><p><strong>Required Docs:</strong></p><ul>${s.docs.map(doc=>`<li>${doc}</li>`).join('')||'<li>None</li>'}</ul><p><strong>Time:</strong> ${s.applyTime}</p><p><strong>Delivery:</strong> ${s.receiveDays}</p><p><a href="${s.wa}" target="_blank" style="color:var(--a);font-weight:bold;">Ask Expert on WhatsApp</a></p>`;detDiv.classList.add('active')}}
+        function hideSvcDet(secId){const detDiv=document.getElementById(`${secId}Det`);detDiv.classList.remove('active');detDiv.innerHTML=''}
+        function resetSvcLs(){document.querySelectorAll('.svc-l li').forEach(item=>item.style.display='block')}
+        function generateReferCode(){const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';let code='';for(let i=0;i<6;i++){code+=chars.charAt(Math.floor(Math.random()*chars.length))}return code+'UG'}
+        function findServiceSection(svcKey){for(const secId in serviceData){if(serviceData[secId][svcKey])return secId}return null}
+        catCs.forEach(card=>{card.addEventListener('click',()=>{const secId=card.getAttribute('data-sec');if(secId==='partner'){if(viewHist[viewHist.length-1]!=='home'){viewHist.push('home')}viewHist.push('partnerSec');showSec('partnerSec')}else{const targetSecId=secId+'Sec';if(viewHist[viewHist.length-1]!=='home'){viewHist.push('home')}viewHist.push(targetSecId);showSec(targetSecId);hideSvcDet(secId)}})});
+        qActs.forEach(action=>{action.addEventListener('click',()=>{const svcKey=action.getAttribute('data-svc'),secId=action.getAttribute('data-sec')?action.getAttribute('data-sec')+'Sec':null;if(svcKey&&secId){if(viewHist[viewHist.length-1]!=='home'){viewHist.push('home')}viewHist.push(secId);viewHist.push(svcKey);showSec(secId);showSvcDet(secId.replace('Sec',''),svcKey)}else{alert("Feature coming soon!")}})});
+        svcLs.forEach(link=>{link.addEventListener('click',e=>{e.preventDefault();const svcKey=link.getAttribute('data-svc'),secId=link.closest('.sec').id;viewHist.push(svcKey);showSvcDet(secId.replace('Sec',''),svcKey)})});
+        backBtns.forEach(button=>{button.addEventListener('click',()=>{viewHist.pop();const prevView=viewHist[viewHist.length-1];if(prevView==='home'){showSec('homeSec');viewHist=['home']}else if(prevView.endsWith('Sec')){showSec(prevView);hideSvcDet(prevView.replace('Sec',''));resetSvcLs()}else{showSec('homeSec');viewHist=['home']}})});
+        gSrchIcn.addEventListener('click',()=>{gSrchC.style.display=gSrchC.style.display==='none'?'block':'none';if(gSrchC.style.display==='block'){gSrchI.focus()}else{gSrchI.value='';resetSvcLs();const lastView=viewHist[viewHist.length-1];if(lastView&&lastView!=='home'){showSec(lastView.endsWith('Sec')?lastView:lastView+'Sec')}else{showSec('homeSec')}}});
+        gSrchI.addEventListener('input',e=>{const term=e.target.value.toLowerCase();hideSvcDet(viewHist[viewHist.length-1].replace('Sec',''));let foundMatch=false;secs.forEach(sec=>{if(sec.id!=='homeSec'&&sec.id!=='partnerSec'){sec.classList.remove('active');const svcList=sec.querySelector('.svc-l');if(svcList){const items=svcList.querySelectorAll('li');let sectionHasMatch=false;items.forEach(item=>{const svcLink=item.querySelector('a'),svcKey=svcLink.getAttribute('data-svc'),svc=serviceData[svcKey],svcName=svc.name.toLowerCase(),svcDesc=svc.desc.toLowerCase();if(svcName.includes(term)||svcDesc.includes(term)){item.style.display='block';sectionHasMatch=true;foundMatch=true}else{item.style.display='none'}});if(sectionHasMatch&&term.length>0){sec.classList.add('active')}}}})
+        if(term.length===0){resetSvcLs();const lastView=viewHist[viewHist.length-1];if(lastView&&lastView!=='home'){showSec(lastView.endsWith('Sec')?lastView:lastView+'Sec')}else{showSec('homeSec')}}else{document.getElementById('homeSec').classList.remove('active');document.getElementById('partnerSec').classList.remove('active')}});
+        supIcn.addEventListener('click',()=>{const supNum='918603980072',msg=encodeURIComponent('Hello NivaranX, I need support regarding a service.');window.open(`https://wa.me/${supNum}?text=${msg}`,'_blank')});
+        referBtn.addEventListener('click',()=>{const referCode=generateReferCode();const message=encodeURIComponent(`नमस्ते! मैं आपको NivaranX™ के साथ डिजिटल क्रांति में शामिल होने के लिए आमंत्रित करता हूँ। यह एक वन-स्टॉप प्लेटफ़ॉर्म है सरकारी और निजी सेवाओं के लिए।\n\nबिना किसी ऑफिस के, अपने स्मार्टफोन और इंटरनेट से कहीं से भी काम करें।\n\nवेबसाइट देखें: https://nivaranx.godaddysites.com/#\n\nमेरा रेफरल कोड: ${referCode}\n\nआज ही जुड़ें और डिजिटल इंडिया का हिस्सा बनें!\n#NivaranX #DigitalIndia #PartnerOpportunity`);window.open(`https://wa.me/?text=${message}`,'_blank')});
+        sendPWABtn.addEventListener('click',()=>{const name=pNameI.value,email=pEmailI.value,phone=pPhoneI.value,city=pCityI.value,state=pStateI.value,zip=pZipI.value,rcode=pRcodeI.value,why=pWhyI.value,partNum='918603980072';if(!name||!phone||!email||!city||!state||!zip||!why){alert('Please fill all required fields (Name, Email, Phone, City, State, Zip Code, Why join).');return}if(rcode&&!rcode.toUpperCase().endsWith('UG')){alert('Invalid Refer Code format. It should end with UG.');return}const waMsg=encodeURIComponent(`Partner Inquiry:\\nName: ${name}\\nEmail: ${email}\\nPhone: ${phone}\\nCity: ${city}\\nState: ${state}\\nZip Code: ${zip}\\nRefer Code: ${rcode||'N/A'}\\nWhy join: ${why}`);window.open(`https://wa.me/${partNum}?text=${waMsg}`,'_blank')});
+        showSec('homeSec');
+    </script>
+</body>
+</html>
