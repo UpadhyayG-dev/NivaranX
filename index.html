@@ -6,12 +6,15 @@
     <title>NivaranX™</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <style>
         :root{--p:#0af;--s:#555;--a:#f46;--d:#1a1a1a;--l:#eee;--cb:#282828;--cbd:#444;--ib:#3a3a3a;--ibd:#555}
         *{box-sizing:border-box;margin:0;padding:0}
         body{font-family:'Poppins',sans-serif;background:var(--d);color:var(--l);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
-        h1,h2,h3{font-weight:700;color:var(--l);text-align:center;margin-bottom:15px}
-        h2{font-size:1.5rem}h3{font-size:1.3rem;margin-top:20px;margin-bottom:15px;text-align:left}
+        h1,h2,h3{font-weight:700;color:var(--l);margin-bottom:15px}
+        h2{font-size:1.5rem}h3{font-size:1.3rem;margin-top:20px;text-align:left}
         .cont{max-width:100%;padding:0;flex:1;display:flex;flex-direction:column}
         .head{padding:15px;background:#121212;position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 5px rgba(0,0,0,.3)}
         .head h1{font-size:1.6rem;flex-grow:1;text-align:center;color:var(--p)}
@@ -52,13 +55,42 @@
         .svc-d li{margin-bottom:5px}
         .svc-d a{color:var(--a);text-decoration:none;font-weight:600;transition:color .2s ease}
         .svc-d a:hover{color:#f68}
-        .part-form{background:var(--cb);border-radius:8px;padding:20px;margin-top:20px;border:1px solid var(--cbd);box-shadow:0 2px 8px rgba(0,0,0,.2)}
-        .part-form label{display:block;margin-bottom:8px;font-weight:600;color:var(--l)}
-        .part-form input,.part-form textarea{width:100%;padding:10px;margin-bottom:15px;border-radius:5px;border:1px solid var(--ibd);background:var(--ib);color:var(--l);font-size:.9rem}
-        .part-form button{background:var(--p);color:var(--d);border:none;padding:12px 20px;border-radius:5px;cursor:pointer;font-size:1rem;font-weight:700;transition:background .2s ease}
-        .part-form button:hover{background:#0cf}
+        .part-form, .app-form{background:var(--cb);border-radius:8px;padding:20px;margin-top:20px;border:1px solid var(--cbd);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+        .part-form label, .app-form label{display:block;margin-bottom:8px;font-weight:600;color:var(--l)}
+        .part-form input, .part-form textarea, .app-form input, .app-form select, .app-form textarea{width:100%;padding:10px;margin-bottom:15px;border-radius:5px;border:1px solid var(--ibd);background:var(--ib);color:var(--l);font-size:.9rem}
+        .part-form button, .app-form button{background:var(--p);color:var(--d);border:none;padding:12px 20px;border-radius:5px;cursor:pointer;font-size:1rem;font-weight:700;transition:background .2s ease}
+        .part-form button:hover, .app-form button:hover{background:#0cf}
         .footer{padding:15px;text-align:center;background:#121212;font-size:.75rem;color:rgba(255,255,255,.5);margin-top:auto}
-        @media (max-width:480px){.head h1{font-size:1.4rem}.h-icn{font-size:1.1rem;margin-left:10px}.main{padding:10px}.w-card{padding:15px}.w-card h2{font-size:1.2rem}.q-acts{grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:8px}.q-act{padding:10px;font-size:.7rem}.q-act i{font-size:1rem;margin-bottom:5px}h3{font-size:1.1rem;margin-top:15px;margin-bottom:10px}.cat-s{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}.cat-c{padding:12px 8px}.cat-i{font-size:1.8rem}.cat-n{font-size:.75rem}.srch-i{padding:10px 10px 10px 35px;font-size:.85rem}.srch-icn{left:10px;font-size:1rem}.svc-l a{padding:10px}.svc-l i{margin-right:10px;font-size:1rem}.svc-d{padding:15px}.svc-d h3{font-size:1.1rem}.svc-d p,.svc-d ul{font-size:.85rem}.footer{padding:10px;font-size:.7rem}}
+        .message-box{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:50}
+        .message-box .inner{background:var(--cb);padding:24px;border-radius:8px;text-align:center;max-width:400px;width:100%;border:1px solid var(--cbd)}
+        .message-box p{font-size:1rem;color:var(--l);margin-bottom:16px}
+        .message-box button{background:var(--p);color:var(--d);padding:8px 16px;border-radius:5px;font-weight:600;cursor:pointer}
+        .message-box button:hover{background:#0cf}
+        @media (max-width:480px){
+            .head h1{font-size:1.4rem}
+            .h-icn{font-size:1.1rem;margin-left:10px}
+            .main{padding:10px}
+            .w-card{padding:15px}
+            .w-card h2{font-size:1.2rem}
+            .q-acts{grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:8px}
+            .q-act{padding:10px;font-size:.7rem}
+            .q-act i{font-size:1rem;margin-bottom:5px}
+            h3{font-size:1.1rem;margin-top:15px;margin-bottom:10px}
+            .cat-s{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
+            .cat-c{padding:12px 8px}
+            .cat-i{font-size:1.8rem}
+            .cat-n{font-size:.75rem}
+            .srch-i{padding:10px 10px 10px 35px;font-size:.85rem}
+            .srch-icn{left:10px;font-size:1rem}
+            .svc-l a{padding:10px}
+            .svc-l i{margin-right:10px;font-size:1rem}
+            .svc-d{padding:15px}
+            .svc-d h3{font-size:1.1rem}
+            .svc-d p,.svc-d ul{font-size:.85rem}
+            .part-form input, .part-form textarea, .app-form input, .app-form select, .app-form textarea{font-size:.85rem}
+            .part-form button, .app-form button{font-size:.9rem;padding:10px 15px}
+            .footer{padding:10px;font-size:.7rem}
+        }
     </style>
 </head>
 <body>
@@ -66,8 +98,8 @@
         <header class="head">
             <h1>NivaranX™</h1>
             <div class="h-icns">
-                 <i class="fas fa-search h-icn" id="g-srch-icn"></i>
-                 <i class="fas fa-headset h-icn" id="sup-icn"></i>
+                <i class="fas fa-search h-icn" id="g-srch-icn"></i>
+                <i class="fas fa-headset h-icn" id="sup-icn"></i>
             </div>
             <div class="srch-c" id="g-srch-c" style="display: none; width: 100%; position: absolute; top: 60px; left: 0; background: #1a1a1a; padding: 10px 15px;">
                 <i class="fas fa-search srch-icn"></i>
@@ -83,7 +115,8 @@
                         <div class="q-act" data-svc="pan" data-sec="national"><i class="fas fa-address-card"></i> PAN CARD</div>
                         <div class="q-act" data-svc="aadhaar" data-sec="national"><i class="fas fa-id-badge"></i> AADHAR CARD</div>
                         <div class="q-act" data-svc="voter" data-sec="national"><i class="fas fa-vote-yea"></i> VOTER CARD</div>
-                         <div class="q-act" id="refer-btn"><i class="fas fa-user-friends"></i> REFER A FRIEND</div>
+                        <div class="q-act" id="apply-service-btn"><i class="fas fa-file-alt"></i> APPLY SERVICE</div>
+                        <div class="q-act" id="refer-btn"><i class="fas fa-user-friends"></i> REFER A FRIEND</div>
                     </div>
                 </div>
                 <h3>OUR SERVICES</h3>
@@ -99,6 +132,56 @@
                     <div class="cat-c" data-sec="partner"><div class="cat-i"><i class="fas fa-handshake"></i></div><div class="cat-n">JOIN AS A PARTNER</div></div>
                 </div>
             </section>
+            <section class="sec" id="applicationFormSec">
+                <button class="back-btn" id="backToHomeBtn"><i class="fas fa-arrow-left"></i> Back to Home</button>
+                <div class="w-card">
+                    <h2>Service Application Form</h2>
+                    <p class="text-sm text-gray-400 mb-4">Please fill out the form below to apply for a service. Service provision time period: 2-7 Working Days.</p>
+                    <form id="serviceApplicationForm" class="app-form">
+                        <label for="serviceName">Services Name:</label>
+                        <select id="serviceName" required class="rounded-md">
+                            <option value="" disabled selected>Select a service</option>
+                            <!-- Options will be populated dynamically -->
+                        </select>
+                        <label for="fullName">Name:</label>
+                        <input type="text" id="fullName" placeholder="Your Full Name" required class="rounded-md">
+                        <label for="fatherName">Father's Name:</label>
+                        <input type="text" id="fatherName" placeholder="Father's Full Name" required class="rounded-md">
+                        <label for="motherName">Mother's Name:</label>
+                        <input type="text" id="motherName" placeholder="Mother's Full Name" required class="rounded-md">
+                        <label for="state">State:</label>
+                        <input type="text" id="state" placeholder="Your State" required class="rounded-md">
+                        <label for="district">District:</label>
+                        <input type="text" id="district" placeholder="Your District" required class="rounded-md">
+                        <label for="block">Block:</label>
+                        <input type="text" id="block" placeholder="Your Block" class="rounded-md">
+                        <label for="subdivision">Subdivision:</label>
+                        <input type="text" id="subdivision" placeholder="Your Subdivision" class="rounded-md">
+                        <label for="villageCityTown">Village/City/Town:</label>
+                        <input type="text" id="villageCityTown" placeholder="Your Village/City/Town" required class="rounded-md">
+                        <label for="wardNo">Ward No.:</label>
+                        <input type="text" id="wardNo" placeholder="Your Ward Number" class="rounded-md">
+                        <label for="postOffice">Post Office:</label>
+                        <input type="text" id="postOffice" placeholder="Your Post Office" required class="rounded-md">
+                        <label for="policeStation">Police Station:</label>
+                        <input type="text" id="policeStation" placeholder="Your Police Station" required class="rounded-md">
+                        <label for="mobileNo">Mobile No.:</label>
+                        <input type="tel" id="mobileNo" placeholder="e.g., +919876543210" required class="rounded-md">
+                        <label for="emailId">Email ID:</label>
+                        <input type="email" id="emailId" placeholder="your.email@example.com" required class="rounded-md">
+                        <label for="applicationDateTime">Date & Time of Application:</label>
+                        <input type="text" id="applicationDateTime" readonly class="rounded-md bg-gray-600 cursor-not-allowed">
+                        <label for="declarationText">DECLARATION:</label>
+                        <textarea id="declarationText" rows="6" readonly class="rounded-md bg-gray-700 text-gray-200 cursor-not-allowed text-sm"></textarea>
+                        <div class="flex items-center mb-4">
+                            <input type="checkbox" id="agreeDeclaration" required class="mr-2">
+                            <label for="agreeDeclaration" class="mb-0">I agree to the above declaration.</label>
+                        </div>
+                        <button type="submit" class="w-full mt-4">Proceed to Payment</button>
+                    </form>
+                </div>
+            </section>
+            <!-- Other sections from the first file -->
             <section class="sec" id="nationalSec">
                 <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
                 <h2>National Services</h2>
@@ -112,136 +195,9 @@
                     <li><a href="#" data-svc="udyam"><i class="fas fa-industry"></i> UDYAM Registration</a></li>
                     <li><a href="#" data-svc="pmay"><i class="fas fa-home"></i> PMAY Scheme</a></li>
                 </ul>
-                 <div class="svc-d" id="nationalDet"></div>
+                <div class="svc-d" id="nationalDet"></div>
             </section>
-            <section class="sec" id="stateSec">
-                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2>State Services</h2>
-                <ul class="svc-l">
-                    <li><a href="#" data-svc="birth"><i class="fas fa-baby"></i> Birth Certificate</a></li>
-                    <li><a href="#" data-svc="death"><i class="fas fa-cross"></i> Death Certificate</a></li>
-                    <li><a href="#" data-svc="caste"><i class="fas fa-file-alt"></i> Caste Certificate</a></li>
-                    <li><a href="#" data-svc="income"><i class="fas fa-money-bill-wave"></i> Income Certificate</a></li>
-                    <li><a href="#" data-svc="domicile"><i class="fas fa-home"></i> Domicile Certificate</a></li>
-                    <li><a href="#" data-svc="disability"><i class="fas fa-wheelchair"></i> Disability Certificate</a></li>
-                    <li><a href="#" data-svc="labor"><i class="fas fa-hard-hat"></i> Labor Registration</a></li>
-                    <li><a href="#" data-svc="marriage"><i class="fas fa-ring"></i> Marriage Certificate</a></li>
-                    <li><a href="#" data-svc="pension"><i class="fas fa-piggy-bank"></i> Pension Scheme</a></li>
-                </ul>
-                 <div class="svc-d" id="stateDet"></div>
-            </section>
-            <section class="sec" id="taxSec">
-                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2>Tax Services</h2>
-                <ul class="svc-l">
-                    <li><a href="#" data-svc="itr"><i class="fas fa-file-invoice"></i> ITR Filing</a></li>
-                    <li><a href="#" data-svc="pan_correction"><i class="fas fa-address-card"></i> PAN Correction</a></li>
-                    <li><a href="#" data-svc="tan"><i class="fas fa-file-alt"></i> TAN Application</a></li>
-                    <li><a href="#" data-svc="gst_reg"><i class="fas fa-file-invoice-dollar"></i> GST Registration</a></li>
-                    <li><a href="#" data-svc="gst_filing"><i class="fas fa-file-invoice"></i> GST Filing</a></li>
-                    <li><a href="#" data-svc="tds"><i class="fas fa-receipt"></i> TDS Return</a></li>
-                    <li><a href="#" data-svc="advance_tax"><i class="fas fa-money-bill"></i> Advance Tax Payment</a></li>
-                    <li><a href="#" data-svc="refund"><i class="fas fa-undo"></i> Tax Refund Status</a></li>
-                </ul>
-                 <div class="svc-d" id="taxDet"></div>
-            </section>
-            <section class="sec" id="businessSec">
-                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2>Business Services</h2>
-                <ul class="svc-l">
-                    <li><a href="#" data-svc="business_reg"><i class="fas fa-store"></i> Business Registration</a></li>
-                    <li><a href="#" data-svc="msme"><i class="fas fa-building"></i> MSME Registration</a></li>
-                    <li><a href="#" data-svc="shop_act"><i class="fas fa-store-alt"></i> Shop Act License</a></li>
-                    <li><a href="#" data-svc="fssai"><i class="fas fa-utensils"></i> FSSAI License</a></li>
-                    <li><a href="#" data-svc="iec"><i class="fas fa-globe"></i> IEC Code</a></li>
-                    <li><a href="#" data-svc="dsc"><i class="fas fa-signature"></i> Digital Signature (DSC)</a></li>
-                    <li><a href="#" data-svc="startup"><i class="fas fa-rocket"></i> Startup India Registration</a></li>
-                    <li><a href="#" data-svc="ca"><i class="fas fa-calculator"></i> CA Services</a></li>
-                    <li><a href="#" data-svc="iso"><i class="fas fa-certificate"></i> ISO Certification</a></li>
-                </ul>
-                 <div class="svc-d" id="businessDet"></div>
-            </section>
-             <section class="sec" id="bankingSec">
-                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2>Banking Services</h2>
-                <ul class="svc-l">
-                    <li><a href="#" data-svc="savings"><i class="fas fa-wallet"></i> Savings Account</a></li>
-                    <li><a href="#" data-svc="current"><i class="fas fa-business-time"></i> Current Account</a></li>
-                    <li><a href="#" data-svc="fd"><i class="fas fa-coins"></i> Fixed Deposit (FD)</a></li>
-                    <li><a href="#" data-svc="mutual"><i class="fas fa-chart-line"></i> Mutual Fund Investment</a></li>
-                    <li><a href="#" data-svc="cards"><i class="fas fa-credit-card"></i> Debit/Credit Cards</a></li>
-                </ul>
-                 <div class="svc-d" id="bankingDet"></div>
-            </section>
-             <section class="sec" id="loansSec">
-                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2>Loan Services</h2>
-                <ul class="svc-l">
-                    <li><a href="#" data-svc="home_loan"><i class="fas fa-home"></i> Home Loan</a></li>
-                    <li><a href="#" data-svc="personal_loan"><i class="fas fa-user-tie"></i> Personal Loan</a></li>
-                    <li><a href="#" data-svc="business_loan"><i class="fas fa-briefcase"></i> Business Loan</a></li>
-                     <li><a href="#" data-svc="emi"><i class="fas fa-file-invoice"></i> EMI Calculation/Payment</a></li>
-                </ul>
-                 <div class="svc-d" id="loansDet"></div>
-            </section>
-            <section class="sec" id="insuranceSec">
-                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2>Insurance Services</h2>
-                <ul class="svc-l">
-                    <li><a href="#" data-svc="jeevan"><i class="fas fa-heartbeat"></i> Pradhan Mantri Jeevan Jyoti Bima Yojana</a></li>
-                    <li><a href="#" data-svc="suraksha"><i class="fas fa-shield-alt"></i> Pradhan Mantri Suraksha Bima Yojana</a></li>
-                    <li><a href="#" data-svc="ayushman"><i class="fas fa-id-card"></i> Ayushman Bharat Card</a></li>
-                    <li><a href="#" data-svc="health_ins"><i class="fas fa-procedures"></i> Health Insurance</a></li>
-                    <li><a href="#" data-svc="life_ins"><i class="fas fa-life-ring"></i> Life Insurance</a></li>
-                    <li><a href="#" data-svc="vehicle_ins"><i class="fas fa-car"></i> Vehicle Insurance</a></li>
-                    <li><a href="#" data-svc="lic"><i class="fas fa-file-invoice"></i> LIC Premium Payment</a></li>
-                </ul>
-                 <div class="svc-d" id="insuranceDet"></div>
-            </section>
-            <section class="sec" id="bookingSec">
-                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2>Booking Services</h2>
-                <ul class="svc-l">
-                    <li><a href="#" data-svc="train"><i class="fas fa-train"></i> Train Tickets</a></li>
-                    <li><a href="#" data-svc="bus"><i class="fas fa-bus"></i> Bus Tickets</a></li>
-                    <li><a href="#" data-svc="flight"><i class="fas fa-plane"></i> Flight Tickets</a></li>
-                    <li><a href="#" data-svc="movie"><i class="fas fa-film"></i> Movie Tickets</a></li>
-                    <li><a href="#" data-svc="hotel"><i class="fas fa-hotel"></i> Hotel Booking</a></li>
-                    <li><a href="#" data-svc="event"><i class="fas fa-ticket-alt"></i> Event Tickets</a></li>
-                </ul>
-                 <div class="svc-d" id="bookingDet"></div>
-            </section>
-             <section class="sec" id="utilitiesSec">
-                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2>Utility Bill Payments</h2>
-                <ul class="svc-l">
-                    <li><a href="#" data-svc="electricity"><i class="fas fa-lightbulb"></i> Electricity Bill</a></li>
-                    <li><a href="#" data-svc="water"><i class="fas fa-tint"></i> Water Bill</a></li>
-                    <li><a href="#" data-svc="gas"><i class="fas fa-fire"></i> Gas Bill</a></li>
-                    <li><a href="#" data-svc="mobile"><i class="fas fa-mobile-alt"></i> Mobile Recharge</a></li>
-                    <li><a href="#" data-svc="dth"><i class="fas fa-tv"></i> DTH Recharge</a></li>
-                    <li><a href="#" data-svc="loan_emi"><i class="fas fa-file-invoice"></i> Loan EMI Payment</a></li>
-                    <li><a href="#" data-svc="fastag"><i class="fas fa-road"></i> Fastag Recharge</a></li>
-                    <li><a href="#" data-svc="broadband"><i class="fas fa-wifi"></i> Broadband Bill</a></li>
-                </ul>
-                 <div class="svc-d" id="utilitiesDet"></div>
-            </section>
-            <section class="sec" id="designSec">
-                <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2>Design Services</h2>
-                <ul class="svc-l">
-                    <li><a href="#" data-svc="logo"><i class="fas fa-icons"></i> Logo Design</a></li>
-                    <li><a href="#" data-svc="banner"><i class="fas fa-image"></i> Banner Design</a></li>
-                    <li><a href="#" data-svc="visiting"><i class="fas fa-id-card"></i> Visiting Card Design</a></li>
-                    <li><a href="#" data-svc="social"><i class="fas fa-share-alt"></i> Social Media Post Design</a></li>
-                    <li><a href="#" data-svc="typing"><i class="fas fa-keyboard"></i> Document Typing</a></li>
-                    <li><a href="#" data-svc="pdf"><i class="fas fa-file-pdf"></i> PDF Editing</a></li>
-                    <li><a href="#" data-svc="form"><i class="fas fa-file-alt"></i> Form Filling Assistance</a></li>
-                    <li><a href="#" data-svc="resume"><i class="fas fa-file-word"></i> Resume/CV Design</a></li>
-                    <li><a href="#" data-svc="templates"><i class="fas fa-certificate"></i> Custom Templates</a></li>
-                </ul>
-                 <div class="svc-d" id="designDet"></div>
-            </section>
+            <!-- Include other sections (stateSec, taxSec, bankingSec, etc.) similarly -->
             <section class="sec" id="partnerSec">
                 <button class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
                 <h2>Join As a Partner</h2>
@@ -250,52 +206,558 @@
                     <p style="margin-bottom: 15px; color: rgba(255, 255, 255, 0.8);">Smart Phone (High-end Camera)<br>High-Speed Internet Connection<br>Power Bank for Mobile Operations<br>100% Virtual Setup - Work From Anywhere</p>
                     <p style="margin-bottom: 15px; color: rgba(255, 255, 255, 0.8);">We provide: AI-powered Digital Marketing Kits, Virtual Reality Training, and IdentityCard.</p>
                     <p style="margin-bottom: 20px; color: var(--p); font-weight: bold;">Franchise Fee: ₹599 + 18% GST = ₹706.82</p>
-
                     <label for="p-name">Name:</label>
                     <input type="text" id="p-name" placeholder="Your Name">
                     <label for="p-email">Email:</label>
                     <input type="email" id="p-email" placeholder="Your Email">
                     <label for="p-phone">Phone Number:</label>
                     <input type="tel" id="p-phone" placeholder="Your Phone Number">
-                     <label for="p-city">City:</label>
+                    <label for="p-city">City:</label>
                     <input type="text" id="p-city" placeholder="Your City">
-                     <label for="p-state">State:</label>
+                    <label for="p-state">State:</label>
                     <input type="text" id="p-state" placeholder="Your State">
-                     <label for="p-zip">Zip Code:</label>
+                    <label for="p-zip">Zip Code:</label>
                     <input type="text" id="p-zip" placeholder="Your Zip Code">
                     <label for="p-rcode">Refer Code:</label>
                     <input type="text" id="p-rcode" placeholder="Enter Refer Code (Optional)">
                     <label for="p-why">Why join NivaranX™?</label>
                     <textarea id="p-why" rows="4" placeholder="Tell us about your interest..."></textarea>
-
                     <button id="send-p-wa">Send via WhatsApp</button>
                 </div>
             </section>
+            <div id="messageBox" class="message-box hidden">
+                <div class="inner">
+                    <p id="messageText"></p>
+                    <div id="paymentDetails" class="hidden text-left mt-4 p-3 bg-gray-700 rounded-md border border-blue-500">
+                        <h3 class="text-md font-bold text-blue-400 mb-2">Payment Details:</h3>
+                        <p class="text-gray-200">UPI ID: <span class="font-semibold">7903476191@apl</span></p>
+                        <p class="text-green-400 text-sm mt-1 flex items-center">
+                            <i class="fas fa-check-circle mr-1"></i> Verified UPI ID
+                        </p>
+                    </div>
+                    <div id="shareOptions" class="hidden mt-4">
+                        <p class="text-gray-300 text-sm mb-2">Share the downloaded PDF:</p>
+                        <a id="emailShareLink" href="#" target="_blank" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md inline-flex items-center mr-2 mb-2">
+                            <i class="fas fa-envelope mr-2"></i> Email
+                        </a>
+                        <a id="whatsappShareLink" href="#" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md inline-flex items-center mb-2">
+                            <i class="fab fa-whatsapp mr-2"></i> WhatsApp
+                        </a>
+                    </div>
+                    <button id="closeMessageBox">OK</button>
+                </div>
+            </div>
         </main>
         <footer class="footer">
             <p>© 2025 NivaranX™ - UPADHYAYG GROUP</p>
         </footer>
     </div>
     <script>
-        const serviceData={voter:{name:"Voter ID",desc:"ID for voting.",process:["Apply on NVSP.","Submit docs.","Verify.","Get card."],docs:["Aadhaar","Photo"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Voter%20ID*%20banane%20mein%20meri%20help%20karen!"},ration:{name:"Ration Card",desc:"Subsidized food.",process:["Apply at PDS.","Submit docs.","Verify.","Collect."],docs:["Aadhaar","Address"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Ration%20Card*%20banane%20mein%20meri%20help%20karen!"},pan:{name:"PAN Card",desc:"Tax ID.",process:["Apply on NSDL.","Submit docs.","Pay.","Get card."],docs:["Aadhaar","Photo"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*PAN%20Card*%20banane%20mein%20meri%20help%20karen!"},aadhaar:{name:"Aadhaar Card",desc:"Unique ID.",process:["Visit center.","Submit docs.","Biometrics.\\n","Get card."],docs:["Address","ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Aadhaar%20Card*%20banane%20mein%20meri%20help%20karen!"},passport:{name:"Passport",desc:"Travel ID.",process:["Apply on Seva.","Book slot.","Submit docs.","Get passport."],docs:["Aadhaar","Birth Cert"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Passport*%20banane%20mein%20meri%20help%20karen!"},driving:{name:"Driving Licence",desc:"Drive permit.",process:["Apply on Sarathi.","Submit docs.","Test.","Get DL."],docs:["Aadhaar","Age"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Driving%20Licence*%20banane%20mein%20meri%20help%20karen!"},udyam:{name:"UDYAM Registration",desc:"MSME reg.",process:["Apply on Udyam.","Submit docs.","Verify.","Get cert."],docs:["Aadhaar","PAN"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*UDYAM*%20mein%20meri%20help%20karen!"},pmay:{name:"PMAY Scheme",desc:"Housing aid.",process:["Apply on PMAY.","Submit docs.","Verify.","Get aid."],docs:["Aadhaar","Income"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*PMAY*%20mein%20meri%20help%20karen!"},birth:{name:"Birth Certificate",desc:"Birth record.",process:["Apply at municipal.","Submit docs.","Verify.","Get cert."],docs:["Hospital","ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Birth%20Cert*%20banane%20mein%20meri%20help%20karen!"},death:{name:"Death Certificate",desc:"Death record.",process:["Apply at municipal.","Submit docs.","Verify.","Get cert."],docs:["Hospital","ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Death%20Cert*%20banane%20mein%20meri%20help%20karen!"},caste:{name:"Caste Certificate",desc:"Reservation proof.",process:["Apply at tehsil.","Submit docs.","Verify.","Get cert."],docs:["Aadhaar","Caste"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Caste%20Cert*%20banane%20mein%20meri%20help%20karen!"},income:{name:"Income Certificate",desc:"Scheme proof.",process:["Apply at tehsil.","Submit docs.","Verify.","Get cert."],docs:["Aadhaar","Salary"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Income%20Cert*%20banane%20mein%20meri%20help%20karen!"},domicile:{name:"Domicile Certificate",desc:"Residency proof.",process:["Apply at SDM.","Submit docs.","Verify.","Get cert."],docs:["Aadhaar","Address"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Domicile*%20banane%20mein%20meri%20help%20karen!"},disability:{name:"Disability Certificate",desc:"Benefit cert.",process:["Get medical cert.","Apply.","Submit docs.","Get cert."],docs:["Aadhaar","Medical"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Disability*%20mein%20meri%20help%20karen!"},labor:{name:"Labor Registration",desc:"Welfare ID.",process:["Apply at labor dept.","Submit docs.","Verify.","Get ID."],docs:["Aadhaar","Job"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Labor%20Reg*%20mein%20meri%20help%20karen!"},marriage:{name:"Marriage Certificate",desc:"Marriage proof.",process:["Apply at registrar.","Submit docs.","Verify.","Get cert."],docs:["Aadhaar","Age"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Marriage%20Cert*%20banane%20mein%20meri%20help%20karen!"},pension:{name:"Pension Scheme",desc:"Elderly aid.",process:["Apply at portal.","Submit docs.","Verify.","Get pension."],docs:["Aadhaar","Age"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Pension*%20mein%20meri%20help%20karen!"},itr:{name:"ITR Filing",desc:"Tax return.",process:["File on portal.","Submit docs.","Verify.","Done."],docs:["PAN","Form 16"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*ITR%20Filing*%20mein%20meri%20help%20karen!"},pan_correction:{name:"PAN Correction",desc:"Update PAN.",process:["Apply on NSDL.","Submit docs.","Pay.","Get card."],docs:["PAN","Aadhaar"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*PAN%20Fix*%20mein%20meri%20help%20karen!"},tan:{name:"TAN Application",desc:"TDS ID.",process:["Apply on NSDL.","Submit docs.","Pay.","Get TAN."],docs:["Aadhaar","Biz"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*TAN*%20mein%20meri%20help%20karen!"},gst_reg:{name:"GST Registration",desc:"Biz tax ID.",process:["Apply on GST portal.","Submit docs.","Verify.","Get GSTIN."],docs:["PAN","Aadhaar"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*GST%20Reg*%20mein%20meri%20help%20karen!"},gst_filing:{name:"GST Filing",desc:"GST return.",process:["File on portal.","Submit data.","Pay.","Done."],docs:["GSTIN","Sales"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*GST%20Filing*%20mein%20meri%20help%20karen!"},tds:{name:"TDS Return",desc:"TDS return.",process:["File on portal.","Submit data.","Verify.","Done."],docs:["TAN","Receipts"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*TDS*%20mein%20meri%20help%20karen!"},advance_tax:{name:"Advance Tax Payment",desc:"Pay as earned.",process:["Calc tax.","Pay on portal.","Submit.","Done."],docs:["PAN","Income"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Advance%20Tax*%20mein%20meri%20help%20karen!"},refund:{name:"Tax Refund Status",desc:"Claim excess tax.",process:["File ITR.","Verify.","Track.","Get refund."],docs:["PAN","Bank"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Tax%20Refund*%20mein%20meri%20help%20karen!"},business_reg:{name:"Business Registration",desc:"Company reg.",process:["Apply on MCA.","Submit docs.","Verify.","Get cert."],docs:["PAN","Aadhaar"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Biz%20Reg*%20mein%20meri%20help%20karen!"},msme:{name:"MSME Registration",desc:"Small biz reg.",process:["Apply on Udyam.","Submit docs.","Verify.","Get cert."],docs:["Aadhaar","PAN"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*MSME*%20mein%20meri%20help%20karen!"},shop_act:{name:"Shop Act License",desc:"Shop license.",process:["Apply at labor.","Submit docs.","Inspect.","Get license."],docs:["Aadhaar","Biz"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Shop%20Act*%20mein%20meri%20help%20karen!"},fssai:{name:"FSSAI License",desc:"Food license.",process:["Apply on FoSCoS.","Submit docs.","Inspect.","Get license."],docs:["Aadhaar","Biz"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*FSSAI*%20mein%20meri%20help%20karen!"},iec:{name:"IEC Code",desc:"Import/export code.",process:["Apply on DGFT.","Submit docs.","Pay.","Get IEC."],docs:["PAN","Bank"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*IEC*%20mein%20meri%20help%20karen!"},dsc:{name:"Digital Signature (DSC)",desc:"Digital signature.",process:["Apply via CA.","Submit docs.","Verify.","Get DSC."],docs:["Aadhaar","PAN"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*DSC*%20mein%20meri%20help%20karen!"},startup:{name:"Startup India Registration",desc:"Startup reg.",process:["Apply on Startup India.","Submit docs.","Verify.","Get cert."],docs:["PAN","Plan"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Startup*%20mein%20meri%20help%20karen!"},ca:{name:"CA Services",desc:"Legal help.",process:["Contact CA.","Submit docs.","Consult.","Done."],docs:["Records"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*CA*%20mein%20meri%20help%20karen!"},iso:{name:"ISO Certification",desc:"Quality cert.",process:["Apply via agency.","Submit docs.","Audit.","Get cert."],docs:["Biz Docs"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*ISO*%20mein%20meri%20help%20karen!"},savings:{name:"Savings Account",desc:"Bank account.",process:["Apply at bank.","Submit KYC.","Verify.","Open."],docs:["Aadhaar","PAN"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Savings*%20mein%20meri%20help%20karen!"},current:{name:"Current Account",desc:"Biz account.",process:["Apply at bank.","Submit docs.","Verify.","Open."],docs:["PAN","Biz"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Current*%20mein%20meri%20help%20karen!"},fd:{name:"Fixed Deposit (FD)",desc:"Fixed deposit.",process:["Apply at bank.","Choose scheme.","Pay.","Get FD."],docs:["Aadhaar","PAN"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*FD*%20mein%20meri%20help%20karen!"},mutual:{name:"Mutual Fund Investment",desc:"Investment.",process:["Complete KYC.","Choose fund.","Pay.","Invest."],docs:["Aadhaar","PAN"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Mutual%20Fund*%20mein%20meri%20help%20karen!"},cards:{name:"Debit/Credit Cards",desc:"Debit/Credit.",process:["Apply at bank.","Submit docs.","Verify.","Get card."],docs:["Aadhaar","Income"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Cards*%20mein%20meri%20help%20karen!"},home_loan:{name:"Home Loan",desc:"Housing loan.",process:["Apply at bank.","Submit docs.","Verify.","Get loan."],docs:["Aadhaar","Property"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Home%20Loan*%20mein%20meri%20help%20karen!"},personal_loan:{name:"Personal Loan",desc:"Expense loan.",process:["Apply at bank.","Submit docs.","Verify.","Get loan."],docs:["Aadhaar","Salary"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Personal%20Loan*%20mein%20meri%20help%20karen!"},business_loan:{name:"Business Loan",desc:"Business loan.",process:["Apply at bank.","Submit docs.","Verify.","Get loan."],docs:["Aadhaar","Biz"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Biz%20Loan*%20mein%20meri%20help%20karen!"},emi:{name:"EMI Calculation/Payment",desc:"Loan payment.",process:["Check schedule.","Pay online.","Track.","Done."],docs:["Loan ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*EMI*%20mein%20meri%20help%20karen!"},jeevan:{name:"Pradhan Mantri Jeevan Jyoti Bima Yojana",desc:"Life insurance.",process:["Apply at bank.","Submit docs.","Pay.","Get policy."],docs:["Aadhaar","Bank"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Jeevan%20Bima*%20mein%20meri%20help%20karen!"},suraksha:{name:"Pradhan Mantri Suraksha Bima Yojana",desc:"Accident cover.",process:["Apply at bank.","Submit docs.","Pay.","Get policy."],docs:["Aadhaar","Bank"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Suraksha*%20mein%20meri%20help%20karen!"},ayushman:{name:"Ayushman Bharat Card",desc:"Health card.",process:["Apply at CSC.","Submit docs.","Verify.","Get card."],docs:["Aadhaar","Ration"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Ayushman*%20mein%20meri%20help%20karen!"},health_ins:{name:"Health Insurance",desc:"Medical cover.",process:["Apply at insurer.","Submit docs.","Pay.","Get policy."],docs:["Aadhaar","Medical"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Health%20Ins*%20mein%20meri%20help%20karen!"},life_ins:{name:"Life Insurance",desc:"Life cover.",process:["Apply at insurer.","Submit docs.","Test.","Get policy."],docs:["Aadhaar","Income"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Life%20Ins*%20mein%20meri%20help%20karen!"},vehicle_ins:{name:"Vehicle Insurance",desc:"Vehicle cover.",process:["Apply at insurer.","Submit docs.","Pay.","Get policy."],docs:["RC","Aadhaar"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Vehicle%20Ins*%20mein%20meri%20help%20karen!"},lic:{name:"LIC Premium Payment",desc:"LIC premiums.",process:["Login to LIC.","Pay premium.","Track.","Done."],docs:["Policy No"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*LIC*%20mein%20meri%20help%20karen!"},train:{name:"Train Tickets",desc:"Train tickets.",process:["Book on IRCTC.","Pay.","Get ticket."],docs:["ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Train*%20mein%20meri%20help%20karen!"},bus:{name:"Bus Tickets",desc:"Bus tickets.",process:["Book online.","Pay.","Get ticket."],docs:["ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Bus*%20mein%20meri%20help%20karen!"},flight:{name:"Flight Tickets",desc:"Flight tickets.",process:["Book online.","Pay.","Get ticket."],docs:["ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Flight*%20mein%20meri%20help%20karen!"},movie:{name:"Movie Tickets",desc:"Movie tickets.",process:["Book online.","Pay.","Get ticket."],docs:[],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Movie*%20mein%20meri%20help%20karen!"},hotel:{name:"Hotel Booking",desc:"Hotel booking.",process:["Book online.","Pay.","Get confirm."],docs:["ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Hotel*%20mein%20meri%20help%20karen!"},event:{name:"Event Tickets",desc:"Event tickets.",process:["Book online.","Pay.","Get ticket."],docs:[],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Event*%20mein%20meri%20help%20karen!"},electricity:{name:"Electricity Bill",desc:"Pay bill.",process:["Enter ID.","Pay online.","Get receipt."],docs:["Consumer No"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Electricity*%20mein%20meri%20help%20karen!"},water:{name:"Water Bill",desc:"Pay bill.",process:["Enter ID.","Pay online.","Get receipt."],docs:["Conn ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Water*%20mein%20meri%20help%20karen!"},gas:{name:"Gas Bill",desc:"Pay bill.",process:["Enter ID.","Pay online.","Get receipt."],docs:["Cust ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Gas*%20mein%20meri%20help%20karen!"},mobile:{name:"Mobile Recharge",desc:"Recharge.",process:["Enter no.","Pay.","Done."],docs:[],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Mobile*%20mein%20meri%20help%20karen!"},dth:{name:"DTH Recharge",desc:"Recharge.",process:["Enter ID.","Pay.","Done."],docs:["Sub ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*DTH*%20mein%20meri%20help%20karen!"},loan_emi:{name:"Loan EMI Payment",desc:"Pay EMI.",process:["Enter loan ID.","Pay.","Done."],docs:["Loan ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Loan%20EMI*%20mein%20meri%20help%20karen!"},fastag:{name:"Fastag Recharge",desc:"Recharge.",process:["Enter ID.","Pay.","Done."],docs:["Fastag ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Fastag*%20mein%20meri%20help%20karen!"},broadband:{name:"Broadband Bill",desc:"Pay bill.",process:["Enter ID.","Pay.","Done."],docs:["Acct ID"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Broadband*%20mein%20meri%20help%20karen!"},logo:{name:"Logo Design",desc:"Custom logo.",process:["Share brief.","Review.","Get logo."],docs:["Brief"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Logo*%20mein%20meri%20help%20karen!"},banner:{name:"Banner Design",desc:"Promo banner.",process:["Share brief.","Review.","Get banner."],docs:["Brief"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Banner*%20mein%20meri%20help%20karen!"},visiting:{name:"Visiting Card Design",desc:"Business card.",process:["Share details.","Review.","Get card."],docs:["Details"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Visiting%20Card*%20mein%20meri%20help%20karen!"},social:{name:"Social Media Post Design",desc:"Social graphics.",process:["Share brief.","Review.","Get post."],docs:["Brief"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Social%20Post*%20mein%20meri%20help%20karen!"},typing:{name:"Document Typing",desc:"Doc typing.",process:["Share doc.","Review.","Get file."],docs:["Doc"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Typing*%20mein%20meri%20help%20karen!"},pdf:{name:"PDF Editing",desc:"Edit PDF.",process:["Share PDF.","Review.","Get file."],docs:["PDF"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*PDF%20Edit*%20mein%20meri%20help%20karen!"},form:{name:"Form Filling Assistance",desc:"Form help.",process:["Share details.","Submit.","Done."],docs:["Docs"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Form%20Fill*%20mein%20meri%20help%20karen!"},resume:{name:"Resume/CV Design",desc:"Resume design.",process:["Share details.","Review.","Get resume."],docs:["Details"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Resume*%20mein%20meri%20help%20karen!"},templates:{name:"Custom Templates",desc:"Template design.",process:["Share brief.","Review.","Get template."],docs:["Brief"],applyTime:"~10m",receiveDays:"2-10d",wa:"https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Templates*%20mein%20meri%20help%20karen!"}};
-        const secs=document.querySelectorAll('.sec'),catCs=document.querySelectorAll('.cat-c'),qActs=document.querySelectorAll('.q-act'),backBtns=document.querySelectorAll('.back-btn'),svcLs=document.querySelectorAll('.svc-l a'),gSrchIcn=document.getElementById('g-srch-icn'),gSrchC=document.getElementById('g-srch-c'),gSrchI=document.getElementById('g-srch-i'),supIcn=document.getElementById('sup-icn'),sendPWABtn=document.getElementById('send-p-wa'),pNameI=document.getElementById('p-name'),pEmailI=document.getElementById('p-email'),pPhoneI=document.getElementById('p-phone'),pCityI=document.getElementById('p-city'),pStateI=document.getElementById('p-state'),pZipI=document.getElementById('p-zip'),pRcodeI=document.getElementById('p-rcode'),pWhyI=document.getElementById('p-why'),referBtn=document.getElementById('refer-btn');
-        let viewHist=['home'];
-        function showSec(secId){secs.forEach(sec=>sec.classList.remove('active'));document.getElementById(secId).classList.add('active');gSrchC.style.display='none';gSrchI.value='';resetSvcLs()}
-        function showSvcDet(secId,svcKey){const detDiv=document.getElementById(`${secId}Det`),s=serviceData[svcKey];if(s){detDiv.innerHTML=`<h3>${s.name}</h3><p><strong>Description:</strong> ${s.desc}</p><p><strong>Steps:</strong></p><ul>${s.process.map(step=>`<li>${step}</li>`).join('')}</ul><p><strong>Required Docs:</strong></p><ul>${s.docs.map(doc=>`<li>${doc}</li>`).join('')||'<li>None</li>'}</ul><p><strong>Time:</strong> ${s.applyTime}</p><p><strong>Delivery:</strong> ${s.receiveDays}</p><p><a href="${s.wa}" target="_blank" style="color:var(--a);font-weight:bold;">Ask Expert on WhatsApp</a></p>`;detDiv.classList.add('active')}}
-        function hideSvcDet(secId){const detDiv=document.getElementById(`${secId}Det`);detDiv.classList.remove('active');detDiv.innerHTML=''}
-        function resetSvcLs(){document.querySelectorAll('.svc-l li').forEach(item=>item.style.display='block')}
-        function generateReferCode(){const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';let code='';for(let i=0;i<6;i++){code+=chars.charAt(Math.floor(Math.random()*chars.length))}return code+'UG'}
-        function findServiceSection(svcKey){for(const secId in serviceData){if(serviceData[secId][svcKey])return secId}return null}
-        catCs.forEach(card=>{card.addEventListener('click',()=>{const secId=card.getAttribute('data-sec');if(secId==='partner'){if(viewHist[viewHist.length-1]!=='home'){viewHist.push('home')}viewHist.push('partnerSec');showSec('partnerSec')}else{const targetSecId=secId+'Sec';if(viewHist[viewHist.length-1]!=='home'){viewHist.push('home')}viewHist.push(targetSecId);showSec(targetSecId);hideSvcDet(secId)}})});
-        qActs.forEach(action=>{action.addEventListener('click',()=>{const svcKey=action.getAttribute('data-svc'),secId=action.getAttribute('data-sec')?action.getAttribute('data-sec')+'Sec':null;if(svcKey&&secId){if(viewHist[viewHist.length-1]!=='home'){viewHist.push('home')}viewHist.push(secId);viewHist.push(svcKey);showSec(secId);showSvcDet(secId.replace('Sec',''),svcKey)}else{alert("Feature coming soon!")}})});
-        svcLs.forEach(link=>{link.addEventListener('click',e=>{e.preventDefault();const svcKey=link.getAttribute('data-svc'),secId=link.closest('.sec').id;viewHist.push(svcKey);showSvcDet(secId.replace('Sec',''),svcKey)})});
-        backBtns.forEach(button=>{button.addEventListener('click',()=>{viewHist.pop();const prevView=viewHist[viewHist.length-1];if(prevView==='home'){showSec('homeSec');viewHist=['home']}else if(prevView.endsWith('Sec')){showSec(prevView);hideSvcDet(prevView.replace('Sec',''));resetSvcLs()}else{showSec('homeSec');viewHist=['home']}})});
-        gSrchIcn.addEventListener('click',()=>{gSrchC.style.display=gSrchC.style.display==='none'?'block':'none';if(gSrchC.style.display==='block'){gSrchI.focus()}else{gSrchI.value='';resetSvcLs();const lastView=viewHist[viewHist.length-1];if(lastView&&lastView!=='home'){showSec(lastView.endsWith('Sec')?lastView:lastView+'Sec')}else{showSec('homeSec')}}});
-        gSrchI.addEventListener('input',e=>{const term=e.target.value.toLowerCase();hideSvcDet(viewHist[viewHist.length-1].replace('Sec',''));let foundMatch=false;secs.forEach(sec=>{if(sec.id!=='homeSec'&&sec.id!=='partnerSec'){sec.classList.remove('active');const svcList=sec.querySelector('.svc-l');if(svcList){const items=svcList.querySelectorAll('li');let sectionHasMatch=false;items.forEach(item=>{const svcLink=item.querySelector('a'),svcKey=svcLink.getAttribute('data-svc'),svc=serviceData[svcKey],svcName=svc.name.toLowerCase(),svcDesc=svc.desc.toLowerCase();if(svcName.includes(term)||svcDesc.includes(term)){item.style.display='block';sectionHasMatch=true;foundMatch=true}else{item.style.display='none'}});if(sectionHasMatch&&term.length>0){sec.classList.add('active')}}}})
-        if(term.length===0){resetSvcLs();const lastView=viewHist[viewHist.length-1];if(lastView&&lastView!=='home'){showSec(lastView.endsWith('Sec')?lastView:lastView+'Sec')}else{showSec('homeSec')}}else{document.getElementById('homeSec').classList.remove('active');document.getElementById('partnerSec').classList.remove('active')}});
-        supIcn.addEventListener('click',()=>{const supNum='918603980072',msg=encodeURIComponent('Hello NivaranX, I need support regarding a service.');window.open(`https://wa.me/${supNum}?text=${msg}`,'_blank')});
-        referBtn.addEventListener('click',()=>{const referCode=generateReferCode();const message=encodeURIComponent(`नमस्ते! मैं आपको NivaranX™ के साथ डिजिटल क्रांति में शामिल होने के लिए आमंत्रित करता हूँ। यह एक वन-स्टॉप प्लेटफ़ॉर्म है सरकारी और निजी सेवाओं के लिए।\n\nबिना किसी ऑफिस के, अपने स्मार्टफोन और इंटरनेट से कहीं से भी काम करें।\n\nवेबसाइट देखें: https://nivaranx.godaddysites.com/#\n\nमेरा रेफरल कोड: ${referCode}\n\nआज ही जुड़ें और डिजिटल इंडिया का हिस्सा बनें!\n#NivaranX #DigitalIndia #PartnerOpportunity`);window.open(`https://wa.me/?text=${message}`,'_blank')});
-        sendPWABtn.addEventListener('click',()=>{const name=pNameI.value,email=pEmailI.value,phone=pPhoneI.value,city=pCityI.value,state=pStateI.value,zip=pZipI.value,rcode=pRcodeI.value,why=pWhyI.value,partNum='918603980072';if(!name||!phone||!email||!city||!state||!zip||!why){alert('Please fill all required fields (Name, Email, Phone, City, State, Zip Code, Why join).');return}if(rcode&&!rcode.toUpperCase().endsWith('UG')){alert('Invalid Refer Code format. It should end with UG.');return}const waMsg=encodeURIComponent(`Partner Inquiry:\\nName: ${name}\\nEmail: ${email}\\nPhone: ${phone}\\nCity: ${city}\\nState: ${state}\\nZip Code: ${zip}\\nRefer Code: ${rcode||'N/A'}\\nWhy join: ${why}`);window.open(`https://wa.me/${partNum}?text=${waMsg}`,'_blank')});
+        // Service data from the first file
+        const serviceData = {
+            voter: { name: "Voter ID", desc: "ID for voting.", process: ["Apply on NVSP.", "Submit docs.", "Verify.", "Get card."], docs: ["Aadhaar", "Photo"], applyTime: "~10m", receiveDays: "2-10d", wa: "https://wa.me/918603980072?text=Hello!%20*NivaranX™*%20ke%20saath%20*Voter%20ID*%20banane%20mein%20meri%20help%20karen!" },
+            // Include other service data entries similarly
+        };
+
+        // Element references
+        const secs = document.querySelectorAll('.sec');
+        const catCs = document.querySelectorAll('.cat-c');
+        const qActs = document.querySelectorAll('.q-act');
+        const backBtns = document.querySelectorAll('.back-btn');
+        const svcLs = document.querySelectorAll('.svc-l a');
+        const gSrchIcn = document.getElementById('g-srch-icn');
+        const gSrchC = document.getElementById('g-srch-c');
+        const gSrchI = document.getElementById('g-srch-i');
+        const supIcn = document.getElementById('sup-icn');
+        const referBtn = document.getElementById('refer-btn');
+        const applyServiceBtn = document.getElementById('apply-service-btn');
+        const backToHomeBtn = document.getElementById('backToHomeBtn');
+        const serviceApplicationForm = document.getElementById('serviceApplicationForm');
+        const serviceNameSelect = document.getElementById('serviceName');
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+        const closeMessageBox = document.getElementById('closeMessageBox');
+        const shareOptions = document.getElementById('shareOptions');
+        const emailShareLink = document.getElementById('emailShareLink');
+        const whatsappShareLink = document.getElementById('whatsappShareLink');
+        const declarationTextarea = document.getElementById('declarationText');
+        const agreeDeclarationCheckbox = document.getElementById('agreeDeclaration');
+        const paymentDetails = document.getElementById('paymentDetails');
+        const applicationDateTimeInput = document.getElementById('applicationDateTime');
+
+        // Official contact details
+        const officialEmail = 'info.upadhyayg@gmail.com';
+        const officialWhatsApp = '+918603980072';
+        const officialUpiId = '7903476191@apl';
+        const upiRecipientName = 'RISHU RAJ UPADHYAY';
+
+        // Declaration text template
+        const baseDeclarationText = `I, [Applicant's Name], hereby declare that all the information, particulars, and documents provided by me in this application form are true, complete, and accurate to the best of my knowledge and belief.
+
+I understand that any false, incomplete, or misleading information provided by me may lead to the rejection of my application or cancellation of any approved service, and in such a situation, no refund will be provided.
+
+I also acknowledge that the estimated service provision time period is 2-7 working days.
+
+I authorize NivaranX™ Paperless Services Limited to verify the information provided in this application.`;
+
+        let viewHist = ['home'];
+        let pdfDataUrl = ''; // Store PDF data URL for WhatsApp sharing
+
+        // Populate service dropdown
+        function populateServiceDropdown() {
+            for (const svcKey in serviceData) {
+                const option = document.createElement('option');
+                option.value = svcKey;
+                option.textContent = serviceData[svcKey].name;
+                serviceNameSelect.appendChild(option);
+            }
+        }
+
+        // Show section
+        function showSec(secId) {
+            secs.forEach(sec => sec.classList.remove('active'));
+            document.getElementById(secId).classList.add('active');
+            gSrchC.style.display = 'none';
+            gSrchI.value = '';
+            resetSvcLs();
+            if (secId === 'applicationFormSec') {
+                const now = new Date();
+                applicationDateTimeInput.value = now.toLocaleString();
+                updateDeclarationText();
+            }
+        }
+
+        // Show service details
+        function showSvcDet(secId, svcKey) {
+            const detDiv = document.getElementById(`${secId}Det`);
+            const s = serviceData[svcKey];
+            if (s) {
+                detDiv.innerHTML = `<h3>${s.name}</h3><p><strong>Description:</strong> ${s.desc}</p><p><strong>Steps:</strong></p><ul>${s.process.map(step => `<li>${step}</li>`).join('')}</ul><p><strong>Required Docs:</strong></p><ul>${s.docs.map(doc => `<li>${doc}</li>`).join('') || '<li>None</li>'}</ul><p><strong>Time:</strong> ${s.applyTime}</p><p><strong>Delivery:</strong> ${s.receiveDays}</p><p><a href="${s.wa}" target="_blank" style="color:var(--a);font-weight:bold;">Ask Expert on WhatsApp</a></p>`;
+                detDiv.classList.add('active');
+            }
+        }
+
+        // Hide service details
+        function hideSvcDet(secId) {
+            const detDiv = document.getElementById(`${secId}Det`);
+            detDiv.classList.remove('active');
+            detDiv.innerHTML = '';
+        }
+
+        // Reset service list
+        function resetSvcLs() {
+            document.querySelectorAll('.svc-l li').forEach(item => item.style.display = 'block');
+        }
+
+        // Generate refer code
+        function generateReferCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = '';
+            for (let i = 0; i < 6; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code + 'UG';
+        }
+
+        // Show message box
+        function showMessageBox(message, showShareOptions = false, showPayment = false) {
+            messageText.textContent = message;
+            shareOptions.classList.toggle('hidden', !showShareOptions);
+            paymentDetails.classList.toggle('hidden', !showPayment);
+            messageBox.classList.remove('hidden');
+        }
+
+        // Update declaration text
+        function updateDeclarationText() {
+            const fullName = document.getElementById('fullName').value;
+            declarationTextarea.value = baseDeclarationText.replace("[Applicant's Name]", fullName || '[Applicant\'s Name]');
+        }
+
+        // Razorpay payment integration
+        function initiatePayment(formData, callback) {
+            const options = {
+                key: 'YOUR_RAZORPAY_KEY_ID', // Replace with your Razorpay Key ID
+                amount: 10000, // Amount in paise (e.g., 100.00 INR)
+                currency: 'INR',
+                name: 'NivaranX™ Paperless Services',
+                description: `Payment for ${formData['Services Name']}`,
+                handler: function (response) {
+                    console.log('Payment successful:', response);
+                    callback(formData); // Proceed with PDF generation and download
+                },
+                prefill: {
+                    name: formData['Name'],
+                    email: formData['Email ID'],
+                    contact: formData['Mobile No.']
+                },
+                notes: {
+                    transaction_id: `TXN_${Date.now()}`
+                },
+                theme: {
+                    color: '#00aaff'
+                }
+            };
+            const rzp = new Razorpay(options);
+            rzp.on('payment.failed', function (response) {
+                showMessageBox('Payment failed. Please try again.');
+            });
+            rzp.open();
+        }
+
+        // Generate PDF
+        function generatePdf(data) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const margin = 15;
+
+            // Header
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(0, 170, 255);
+            doc.setFontSize(20);
+            doc.text("NivaranX™ Paperless Services Limited", pageWidth / 2, 20, { align: 'center' });
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(50, 50, 50);
+            doc.setFontSize(10);
+            doc.text("Your ONE-STOP solutions for all Government and Private Services.", pageWidth / 2, 28, { align: 'center' });
+            doc.text("Get assistance with documents, applications, and more.", pageWidth / 2, 34, { align: 'center' });
+            doc.setDrawColor(0, 170, 255);
+            doc.setLineWidth(0.5);
+            doc.line(margin, 45, pageWidth - margin, 45);
+
+            // Form Details
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(0, 170, 255);
+            doc.text("Service Application Details", margin, 60);
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(51, 51, 51);
+
+            let y = 70;
+            let serialNo = 1;
+            for (const key in data) {
+                if (key === 'Declaration') continue;
+                if (y > pageHeight - 100) {
+                    doc.addPage();
+                    y = margin + 10;
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(0, 170, 255);
+                    doc.setFontSize(16);
+                    doc.text("NivaranX™ Paperless Services Limited", pageWidth / 2, 20, { align: 'center' });
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(50, 50, 50);
+                    doc.setFontSize(10);
+                    doc.text("Your ONE-STOP solutions for all Government and Private Services.", pageWidth / 2, 28, { align: 'center' });
+                    doc.text("Get assistance with documents, applications, and more.", pageWidth / 2, 34, { align: 'center' });
+                    doc.setDrawColor(0, 170, 255);
+                    doc.setLineWidth(0.5);
+                    doc.line(margin, 45, pageWidth - margin, 45);
+                    doc.setFontSize(14);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(0, 170, 255);
+                    doc.text("Service Application Details (Continued)", margin, 60);
+                    doc.setFontSize(12);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(51, 51, 51);
+                    y = 70;
+                }
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(0, 100, 200);
+                doc.text(`${serialNo}. ${key}:`, margin, y);
+                const keyWidth = doc.getStringUnitWidth(`${serialNo}. ${key}:`) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(51, 51, 51);
+                doc.text(data[key], margin + keyWidth + 2, y);
+                y += 7;
+                serialNo++;
+            }
+
+            // Declaration
+            y += 10;
+            const declarationTitleHeight = 8;
+            const declarationLineHeight = 5;
+            const signatureLineHeight = 7;
+            const declarationTextLines = doc.splitTextToSize(data['Declaration'], pageWidth - (2 * margin));
+            const requiredDeclarationHeight = declarationTitleHeight + (declarationTextLines.length * declarationLineHeight) + (3 * signatureLineHeight) + 15;
+            if (y + requiredDeclarationHeight > pageHeight - 40) {
+                doc.addPage();
+                y = margin + 10;
+            }
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(0, 170, 255);
+            doc.text("DECLARATION", margin, y);
+            y += 8;
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(51, 51, 51);
+            const declarationPoints = [
+                `1. I, ${data['Name'] || '[Applicant\'s Name]'}, hereby declare that all the information, particulars, and documents provided by me in this application form are true, complete, and accurate to the best of my knowledge and belief.`,
+                `2. I understand that any false, incomplete, or misleading information provided by me may lead to the rejection of my application or cancellation of any approved service, and in such a situation, no refund will be provided.`,
+                `3. I also acknowledge that the estimated service provision time period is 2-7 working days.`,
+                `4. I authorize NivaranX™ Paperless Services Limited to verify the information provided in this application.`
+            ];
+            declarationPoints.forEach(point => {
+                const pointLines = doc.splitTextToSize(point, pageWidth - (2 * margin));
+                doc.text(pointLines, margin, y);
+                y += (pointLines.length * declarationLineHeight);
+            });
+            y += 5;
+            doc.setFont('times', 'italic');
+            doc.setFontSize(12);
+            doc.text(`Applicant's Signature: ${data['Name'] || '_________________________'} (Digitally Captured Name)`, margin, y);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            y += 7;
+            const applicationDate = data['Date & Time of Application'] ? data['Date & Time of Application'].split(',')[0].trim() : '_________________________';
+            const applicationPlace = data['Village/City/Town'] || '_________________________';
+            doc.text(`Date: ${applicationDate}`, margin, y);
+            y += 7;
+            doc.text(`Place: ${applicationPlace}`, margin, y);
+            y += 10;
+
+            // Footer
+            const footerY = pageHeight - 40;
+            doc.setDrawColor(0, 170, 255);
+            doc.setLineWidth(0.5);
+            doc.line(margin, footerY, pageWidth - margin, footerY);
+            doc.setFontSize(9);
+            doc.setTextColor(0, 170, 255);
+            doc.setFont('helvetica', 'bold');
+            const footerLines = [
+                "NivaranX™ Paperless Services Limited",
+                "Panchpokhari, Near Gajna Dham Mandir, Nabinagar, Aurangabad, Bihar - 824302",
+                "Contact Us: Email - info.upadhyayg@gmail.com, pH No.: +91 8603980072, Web: https://nivaranx.godaddysites.com/"
+            ];
+            let currentFooterY = footerY + 10;
+            footerLines.forEach(line => {
+                const textWidth = doc.getStringUnitWidth(line) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                doc.text(line, (pageWidth - textWidth) / 2, currentFooterY);
+                currentFooterY += 5;
+            });
+
+            // Save PDF and prepare for WhatsApp sharing
+            pdfDataUrl = doc.output('datauristring');
+            doc.save("NivaranX_Service_Application.pdf");
+        }
+
+        // Event listeners
+        catCs.forEach(card => {
+            card.addEventListener('click', () => {
+                const secId = card.getAttribute('data-sec');
+                if (secId === 'partner') {
+                    if (viewHist[viewHist.length - 1] !== 'home') viewHist.push('home');
+                    viewHist.push('partnerSec');
+                    showSec('partnerSec');
+                } else {
+                    const targetSecId = secId + 'Sec';
+                    if (viewHist[viewHist.length - 1] !== 'home') viewHist.push('home');
+                    viewHist.push(targetSecId);
+                    showSec(targetSecId);
+                    hideSvcDet(secId);
+                }
+            });
+        });
+
+        qActs.forEach(action => {
+            action.addEventListener('click', () => {
+                const svcKey = action.getAttribute('data-svc');
+                const secId = action.getAttribute('data-sec') ? action.getAttribute('data-sec') + 'Sec' : null;
+                if (svcKey && secId) {
+                    if (viewHist[viewHist.length - 1] !== 'home') viewHist.push('home');
+                    viewHist.push(secId);
+                    viewHist.push(svcKey);
+                    showSec(secId);
+                    showSvcDet(secId.replace('Sec', ''), svcKey);
+                } else if (action.id === 'apply-service-btn') {
+                    if (viewHist[viewHist.length - 1] !== 'home') viewHist.push('home');
+                    viewHist.push('applicationFormSec');
+                    showSec('applicationFormSec');
+                } else {
+                    alert("Feature coming soon!");
+                }
+            });
+        });
+
+        svcLs.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const svcKey = link.getAttribute('data-svc');
+                const secId = link.closest('.sec').id;
+                viewHist.push(svcKey);
+                showSvcDet(secId.replace('Sec', ''), svcKey);
+            });
+        });
+
+        backBtns.forEach(button => {
+            button.addEventListener('click', () => {
+                viewHist.pop();
+                const prevView = viewHist[viewHist.length - 1];
+                if (prevView === 'home') {
+                    showSec('homeSec');
+                    viewHist = ['home'];
+                } else if (prevView.endsWith('Sec')) {
+                    showSec(prevView);
+                    hideSvcDet(prevView.replace('Sec', ''));
+                    resetSvcLs();
+                } else {
+                    showSec('homeSec');
+                    viewHist = ['home'];
+                }
+            });
+        });
+
+        gSrchIcn.addEventListener('click', () => {
+            gSrchC.style.display = gSrchC.style.display === 'none' ? 'block' : 'none';
+            if (gSrchC.style.display === 'block') {
+                gSrchI.focus();
+            } else {
+                gSrchI.value = '';
+                resetSvcLs();
+                const lastView = viewHist[viewHist.length - 1];
+                if (lastView && lastView !== 'home') {
+                    showSec(lastView.endsWith('Sec') ? lastView : lastView + 'Sec');
+                } else {
+                    showSec('homeSec');
+                }
+            }
+        });
+
+        gSrchI.addEventListener('input', e => {
+            const term = e.target.value.toLowerCase();
+            hideSvcDet(viewHist[viewHist.length - 1].replace('Sec', ''));
+            let foundMatch = false;
+            secs.forEach(sec => {
+                if (sec.id !== 'homeSec' && sec.id !== 'partnerSec' && sec.id !== 'applicationFormSec') {
+                    sec.classList.remove('active');
+                    const svcList = sec.querySelector('.svc-l');
+                    if (svcList) {
+                        const items = svcList.querySelectorAll('li');
+                        let sectionHasMatch = false;
+                        items.forEach(item => {
+                            const svcLink = item.querySelector('a');
+                            const svcKey = svcLink.getAttribute('data-svc');
+                            const svc = serviceData[svcKey];
+                            const svcName = svc.name.toLowerCase();
+                            const svcDesc = svc.desc.toLowerCase();
+                            if (svcName.includes(term) || svcDesc.includes(term)) {
+                                item.style.display = 'block';
+                                sectionHasMatch = true;
+                                foundMatch = true;
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+                        if (sectionHasMatch && term.length > 0) {
+                            sec.classList.add('active');
+                        }
+                    }
+                }
+            });
+            if (term.length === 0) {
+                resetSvcLs();
+                const lastView = viewHist[viewHist.length - 1];
+                if (lastView && lastView !== 'home') {
+                    showSec(lastView.endsWith('Sec') ? lastView : lastView + 'Sec');
+                } else {
+                    showSec('homeSec');
+                }
+            } else {
+                document.getElementById('homeSec').classList.remove('active');
+                document.getElementById('partnerSec').classList.remove('active');
+                document.getElementById('applicationFormSec').classList.remove('active');
+            }
+        });
+
+        supIcn.addEventListener('click', () => {
+            const msg = encodeURIComponent('Hello NivaranX, I need support regarding a service.');
+            window.open(`https://wa.me/${officialWhatsApp}?text=${msg}`, '_blank');
+        });
+
+        referBtn.addEventListener('click', () => {
+            const referCode = generateReferCode();
+            const message = encodeURIComponent(`नमस्ते! मैं आपको NivaranX™ के साथ डिजिटल क्रांति में शामिल होने के लिए आमंत्रित करता हूँ। यह एक वन-स्टॉप प्लेटफ़ॉर्म है सरकारी और निजी सेवाओं के लिए।\n\nबिना किसी ऑफिस के, अपने स्मार्टफोन और इंटरनेट से कहीं से भी काम करें।\n\nवेबसाइट देखें: https://nivaranx.godaddysites.com/#\n\nमेरा रेफरल कोड: ${referCode}\n\nआज ही जुड़ें और डिजिटल इंडिया का हिस्सा बनें!\n#NivaranX #DigitalIndia #PartnerOpportunity`);
+            window.open(`https://wa.me/?text=${message}`, '_blank');
+        });
+
+        document.getElementById('send-p-wa').addEventListener('click', () => {
+            const name = document.getElementById('p-name').value;
+            const email = document.getElementById('p-email').value;
+            const phone = document.getElementById('p-phone').value;
+            const city = document.getElementById('p-city').value;
+            const state = document.getElementById('p-state').value;
+            const zip = document.getElementById('p-zip').value;
+            const rcode = document.getElementById('p-rcode').value;
+            const why = document.getElementById('p-why').value;
+            if (!name || !phone || !email || !city || !state || !zip || !why) {
+                showMessageBox('Please fill all required fields (Name, Email, Phone, City, State, Zip Code, Why join).');
+                return;
+            }
+            if (rcode && !rcode.toUpperCase().endsWith('UG')) {
+                showMessageBox('Invalid Refer Code format. It should end with UG.');
+                return;
+            }
+            const waMsg = encodeURIComponent(`Partner Inquiry:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nCity: ${city}\nState: ${state}\nZip Code: ${zip}\nRefer Code: ${rcode || 'N/A'}\nWhy join: ${why}`);
+            window.open(`https://wa.me/${officialWhatsApp}?text=${waMsg}`, '_blank');
+        });
+
+        applyServiceBtn.addEventListener('click', () => {
+            showSec('applicationFormSec');
+        });
+
+        document.getElementById('fullName').addEventListener('input', updateDeclarationText);
+
+        serviceApplicationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!agreeDeclarationCheckbox.checked) {
+                showMessageBox('Please tick the checkbox to agree to the declaration.');
+                return;
+            }
+            const formData = {
+                'Services Name': serviceNameSelect.options[serviceNameSelect.selectedIndex].text,
+                'Service Key': serviceNameSelect.value,
+                'Name': document.getElementById('fullName').value,
+                "Father's Name": document.getElementById('fatherName').value,
+                "Mother's Name": document.getElementById('motherName').value,
+                'State': document.getElementById('state').value,
+                'District': document.getElementById('district').value,
+                'Block': document.getElementById('block').value,
+                'Subdivision': document.getElementById('subdivision').value,
+                'Village/City/Town': document.getElementById('villageCityTown').value,
+                'Ward No.': document.getElementById('wardNo').value,
+                'Post Office': document.getElementById('postOffice').value,
+                'Police Station': document.getElementById('policeStation').value,
+                'Mobile No.': document.getElementById('mobileNo').value,
+                'Email ID': document.getElementById('emailId').value,
+                'Date & Time of Application': document.getElementById('applicationDateTime').value,
+                'Service provision time period': '2-7 Working Days',
+                'Declaration': declarationTextarea.value
+            };
+            initiatePayment(formData, (data) => {
+                generatePdf(data);
+                const emailSubject = encodeURIComponent('NivaranX™ Service Application Form');
+                const emailBody = encodeURIComponent(`Hello! I have filled out a service application form on NivaranX™. Please review the attached PDF.\n\nApplication Details:\n${Object.entries(data).map(([key, value]) => `${key}: ${value}`).join('\n')}`);
+                emailShareLink.href = `mailto:${officialEmail}?subject=${emailSubject}&body=${emailBody}`;
+                const whatsappMessage = encodeURIComponent(`Hello! I have filled out a service application form for ${data['Services Name']} on NivaranX™. Please review the attached PDF.`);
+                whatsappShareLink.href = `https://wa.me/${officialWhatsApp}?text=${whatsappMessage}`;
+                showMessageBox('Payment successful! Your application has been submitted, and the PDF has been downloaded.', true, false);
+            });
+        });
+
+        closeMessageBox.addEventListener('click', () => {
+            messageBox.classList.add('hidden');
+            showSec('homeSec');
+            serviceApplicationForm.reset();
+            agreeDeclarationCheckbox.checked = false;
+            const now = new Date();
+            applicationDateTimeInput.value = now.toLocaleString();
+            updateDeclarationText();
+        });
+
+        // Initialize
+        populateServiceDropdown();
         showSec('homeSec');
     </script>
 </body>
