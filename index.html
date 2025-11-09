@@ -1413,6 +1413,35 @@ body {
         let paymentScreenshot = null; // Stores the payment screenshot data URL
         let userActivity = JSON.parse(localStorage.getItem('userActivity') || '[]'); // User activity log
         let chatbotOpen = false;
+        // --- Day/Night Mode Toggle ---
+function setupThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    
+    // Set initial theme
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    updateThemeIcon(currentTheme);
+    
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+        
+        showToast(newTheme === 'dark' ? 'डार्क मोड सक्रिय' : 'लाइट मोड सक्रिय', 'info');
+    });
+}
+
+function updateThemeIcon(theme) {
+    const themeIcon = document.querySelector('#themeToggle i');
+    if (theme === 'dark') {
+        themeIcon.className = 'fas fa-moon';
+    } else {
+        themeIcon.className = 'fas fa-sun';
+    }
+}
 
         // --- Service & Updates Data ---
         const serviceData = {
