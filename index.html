@@ -1189,212 +1189,7 @@
 
         .ai-eligibility-results.error {
             color: var(--danger);
-        }        /* React Tabs Styles */
-        #react-tabs-container {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 500px;
-            z-index: 1000;
         }
-
-        .min-h-screen {
-            min-height: auto !important;
-        }
-
-        .bg-gradient-to-br {
-            background: transparent !important;
-        }
-
-        .from-gray-900 {
-            background: transparent !important;
-        }
-
-        .via-gray-800 {
-            background: transparent !important;
-        }
-
-        .to-gray-900 {
-            background: transparent !important;
-        }
-
-        .flex {
-            display: flex;
-        }
-
-        .items-center {
-            align-items: center;
-        }
-
-        .justify-center {
-            justify-content: center;
-        }
-
-        .p-8 {
-            padding: 2rem !important;
-        }
-
-        .w-full {
-            width: 100%;
-        }
-
-        .max-w-4xl {
-            max-width: 56rem;
-        }
-
-        .bg-gradient-to-r {
-            background: linear-gradient(to right, var(--glass), rgba(30, 32, 50, 0.9));
-        }
-
-        .from-gray-800 {
-            /* Already handled by bg-gradient-to-r */
-        }
-
-        .to-gray-900 {
-            /* Already handled by bg-gradient-to-r */
-        }
-
-        .rounded-full {
-            border-radius: 9999px;
-        }
-
-        .p-3 {
-            padding: 0.75rem;
-        }
-
-        .shadow-2xl {
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .border {
-            border-width: 1px;
-        }
-
-        .border-gray-700\\/50 {
-            border-color: rgba(156, 163, 175, 0.3);
-        }
-
-        .flex {
-            display: flex;
-        }
-
-        .items-center {
-            align-items: center;
-        }
-
-        .justify-between {
-            justify-content: space-between;
-        }
-
-        .gap-2 {
-            gap: 0.5rem;
-        }
-
-        .relative {
-            position: relative;
-        }
-
-        .flex {
-            display: flex;
-        }
-
-        .items-center {
-            align-items: center;
-        }
-
-        .gap-3 {
-            gap: 0.75rem;
-        }
-
-        .px-6 {
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-        }
-
-        .py-3 {
-            padding-top: 0.75rem;
-            padding-bottom: 0.75rem;
-        }
-
-        .rounded-full {
-            border-radius: 9999px;
-        }
-
-        .transition-all {
-            transition: all 0.3s ease;
-        }
-
-        .duration-300 {
-            transition-duration: 300ms;
-        }
-
-        .ease-out {
-            transition-timing-function: ease-out;
-        }
-
-        .bg-gradient-to-r.from-gray-700.to-gray-800 {
-            background: linear-gradient(to right, rgba(55, 65, 81, 0.8), rgba(31, 41, 55, 0.8));
-        }
-
-        .shadow-lg {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-        }
-
-        .hover\\:bg-gray-800\\/50:hover {
-            background: rgba(31, 41, 55, 0.5);
-        }
-
-        .absolute {
-            position: absolute;
-        }
-
-        .inset-0 {
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-        }
-
-        .rounded-full {
-            border-radius: 9999px;
-        }
-
-        .blur-xl {
-            filter: blur(20px);
-        }
-
-        .opacity-50 {
-            opacity: 0.5;
-        }
-
-        .relative.z-10 {
-            position: relative;
-            z-index: 10;
-        }
-
-        .text-white {
-            color: white;
-        }
-
-        .text-gray-400 {
-            color: rgba(156, 163, 175, 1);
-        }
-
-        .font-medium {
-            font-weight: 500;
-        }
-
-        .text-sm {
-            font-size: 0.875rem;
-        }
-
-        .whitespace-nowrap {
-            white-space: nowrap;
-        }
-    </style>
-</head>
     </style>
 </head>
 <body>
@@ -1545,85 +1340,29 @@
         </div>
     </div>
 
-    <!-- React Style Tabs Navigation -->
-<div id="react-tabs-container"></div>
-
-<script type="text/babel">
-    const { useState } = React;
-
-    function TabsNavigation() {
-        const [activeTab, setActiveTab] = useState('Dashboard');
-
-        const tabs = [
-            { name: 'Dashboard', icon: 'fa-home' },
-            { name: 'Discover', icon: 'fa-compass' },
-            { name: 'Services', icon: 'fa-infinity' },
-            { name: 'Updates', icon: 'fa-newspaper' },
-            { name: 'Profile', icon: 'fa-user' }
-        ];
-
-        return React.createElement('div', {
-            className: "min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-8"
-        }, 
-            React.createElement('div', { className: "w-full max-w-4xl" },
-                React.createElement('nav', {
-                    className: "bg-gradient-to-r from-gray-800 to-gray-900 rounded-full p-3 shadow-2xl border border-gray-700/50"
-                },
-                    React.createElement('div', { className: "flex items-center justify-between gap-2" },
-                        tabs.map((tab) => {
-                            const isActive = activeTab === tab.name;
-                            
-                            return React.createElement('button', {
-                                key: tab.name,
-                                onClick: () => setActiveTab(tab.name),
-                                className: `
-                                    relative flex items-center gap-3 px-6 py-3 rounded-full
-                                    transition-all duration-300 ease-out
-                                    ${isActive 
-                                        ? 'bg-gradient-to-r from-gray-700 to-gray-800 shadow-lg' 
-                                        : 'hover:bg-gray-800/50'
-                                    }
-                                `,
-                                style: {
-                                    boxShadow: isActive 
-                                        ? '0 0 30px rgba(156, 163, 175, 0.3), inset 0 0 20px rgba(156, 163, 175, 0.1)' 
-                                        : 'none'
-                                }
-                            }, [
-                                isActive && React.createElement('div', {
-                                    key: 'glow',
-                                    className: "absolute inset-0 rounded-full blur-xl opacity-50",
-                                    style: {
-                                        background: 'radial-gradient(circle, rgba(156, 163, 175, 0.4) 0%, transparent 70%)',
-                                    }
-                                }),
-                                
-                                React.createElement('i', {
-                                    key: 'icon',
-                                    className: `
-                                        relative z-10 transition-all duration-300
-                                        ${isActive ? 'text-white' : 'text-gray-400'}
-                                        fas ${tab.icon}
-                                    `,
-                                    style: { fontSize: '20px' }
-                                }),
-                                
-                                isActive && React.createElement('span', {
-                                    key: 'text',
-                                    className: "relative z-10 text-white font-medium text-sm whitespace-nowrap"
-                                }, tab.name)
-                            ]);
-                        })
-                    )
-                )
-            )
-        );
-    }
-
-    // Render the React component
-    const root = ReactDOM.createRoot(document.getElementById('react-tabs-container'));
-    root.render(React.createElement(TabsNavigation));
-</script>
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" data-target="home">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <span class="nav-label">Home</span>
+        </a>
+        <a href="#" class="nav-item" data-target="discover">
+            <div class="nav-icon"><i class="fas fa-compass"></i></div>
+            <span class="nav-label">Discover</span>
+        </a>
+        <a href="#" class="nav-item" data-target="services">
+            <div class="nav-icon"><i class="fas fa-infinity"></i></div>
+            <span class="nav-label">Services</span>
+        </a>
+        <a href="#" class="nav-item" data-target="updates">
+            <div class="nav-icon"><i class="fas fa-newspaper"></i></div>
+            <span class="nav-label">Updates</span>
+        </a>
+        <a href="#" class="nav-item" data-target="profile">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <span class="nav-label">Profile</span>
+        </a>
+    </nav>
     
     <!-- Toast Notification -->
     <div id="toast-notification"></div>
