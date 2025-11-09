@@ -1340,29 +1340,85 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <a href="#" class="nav-item active" data-target="home">
-            <div class="nav-icon"><i class="fas fa-home"></i></div>
-            <span class="nav-label">Home</span>
-        </a>
-        <a href="#" class="nav-item" data-target="discover">
-            <div class="nav-icon"><i class="fas fa-compass"></i></div>
-            <span class="nav-label">Discover</span>
-        </a>
-        <a href="#" class="nav-item" data-target="services">
-            <div class="nav-icon"><i class="fas fa-infinity"></i></div>
-            <span class="nav-label">Services</span>
-        </a>
-        <a href="#" class="nav-item" data-target="updates">
-            <div class="nav-icon"><i class="fas fa-newspaper"></i></div>
-            <span class="nav-label">Updates</span>
-        </a>
-        <a href="#" class="nav-item" data-target="profile">
-            <div class="nav-icon"><i class="fas fa-user"></i></div>
-            <span class="nav-label">Profile</span>
-        </a>
-    </nav>
+    <!-- React Style Tabs Navigation -->
+<div id="react-tabs-container"></div>
+
+<script type="text/babel">
+    const { useState } = React;
+
+    function TabsNavigation() {
+        const [activeTab, setActiveTab] = useState('Dashboard');
+
+        const tabs = [
+            { name: 'Dashboard', icon: 'fa-home' },
+            { name: 'Discover', icon: 'fa-compass' },
+            { name: 'Services', icon: 'fa-infinity' },
+            { name: 'Updates', icon: 'fa-newspaper' },
+            { name: 'Profile', icon: 'fa-user' }
+        ];
+
+        return React.createElement('div', {
+            className: "min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-8"
+        }, 
+            React.createElement('div', { className: "w-full max-w-4xl" },
+                React.createElement('nav', {
+                    className: "bg-gradient-to-r from-gray-800 to-gray-900 rounded-full p-3 shadow-2xl border border-gray-700/50"
+                },
+                    React.createElement('div', { className: "flex items-center justify-between gap-2" },
+                        tabs.map((tab) => {
+                            const isActive = activeTab === tab.name;
+                            
+                            return React.createElement('button', {
+                                key: tab.name,
+                                onClick: () => setActiveTab(tab.name),
+                                className: `
+                                    relative flex items-center gap-3 px-6 py-3 rounded-full
+                                    transition-all duration-300 ease-out
+                                    ${isActive 
+                                        ? 'bg-gradient-to-r from-gray-700 to-gray-800 shadow-lg' 
+                                        : 'hover:bg-gray-800/50'
+                                    }
+                                `,
+                                style: {
+                                    boxShadow: isActive 
+                                        ? '0 0 30px rgba(156, 163, 175, 0.3), inset 0 0 20px rgba(156, 163, 175, 0.1)' 
+                                        : 'none'
+                                }
+                            }, [
+                                isActive && React.createElement('div', {
+                                    key: 'glow',
+                                    className: "absolute inset-0 rounded-full blur-xl opacity-50",
+                                    style: {
+                                        background: 'radial-gradient(circle, rgba(156, 163, 175, 0.4) 0%, transparent 70%)',
+                                    }
+                                }),
+                                
+                                React.createElement('i', {
+                                    key: 'icon',
+                                    className: `
+                                        relative z-10 transition-all duration-300
+                                        ${isActive ? 'text-white' : 'text-gray-400'}
+                                        fas ${tab.icon}
+                                    `,
+                                    style: { fontSize: '20px' }
+                                }),
+                                
+                                isActive && React.createElement('span', {
+                                    key: 'text',
+                                    className: "relative z-10 text-white font-medium text-sm whitespace-nowrap"
+                                }, tab.name)
+                            ]);
+                        })
+                    )
+                )
+            )
+        );
+    }
+
+    // Render the React component
+    const root = ReactDOM.createRoot(document.getElementById('react-tabs-container'));
+    root.render(React.createElement(TabsNavigation));
+</script>
     
     <!-- Toast Notification -->
     <div id="toast-notification"></div>
