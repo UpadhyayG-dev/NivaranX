@@ -1190,6 +1190,36 @@
         .ai-eligibility-results.error {
             color: var(--danger);
         }
+        /* Day/Night Mode Styles */
+:root[data-theme="light"] {
+    --primary: #6C4DF6;
+    --secondary: #3D2B8E;
+    --accent: #FF7D59;
+    --dark: #F9FAFF;
+    --light: #1A1C2A;
+    --glass: rgba(26, 28, 42, 0.12);
+    --success: #4BB543;
+    --danger: #f72585;
+    --progress: #4cc9f0;
+    --warning: #ffcc00;
+}
+
+body[data-theme="light"] {
+    background: var(--dark);
+    color: var(--light);
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(108, 77, 246, 0.08) 0%, transparent 35%),
+        radial-gradient(circle at 80% 70%, rgba(255, 125, 89, 0.08) 0%, transparent 35%);
+}
+
+/* Theme transition */
+body {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.app-header, .hero-card, .service-card, .modal-content, .bottom-nav {
+    transition: all 0.5s ease;
+}
     </style>
 </head>
 <body>
