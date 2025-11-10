@@ -2920,63 +2920,65 @@ function updateThemeIcon(theme) {
             document.querySelector('.bottom-nav').classList.add('visible');
         }
 
-        function populateServiceCards(filterText = '') {
-            const grid = document.getElementById('servicesGrid');
-            grid.innerHTML = '';
-            const noServicesFound = document.getElementById('noServicesFound');
-            const servicesSectionTitle = document.getElementById('servicesSectionTitle');
-            let foundServices = false;
+        function populateExploreServices(filterText = '') {
+    const grid = document.getElementById('exploreServicesGrid');
+    const noServicesFound = document.getElementById('exploreNoServicesFound');
+    grid.innerHTML = '';
+    let foundServices = false;
 
-            if (filterText === '') {
-                // Show categories if no filter
-                servicesSectionTitle.textContent = 'All Services';
-                for (const [key, data] of Object.entries(serviceData)) {
-                    const card = document.createElement('div');
-                    card.className = 'service-card';
-                    card.dataset.category = key;
-                    card.innerHTML = `<div class="service-icon"><i class="fas ${data.icon}"></i></div><div class="service-name">${data.name}</div>`;
-                    card.onclick = () => openServiceModal(key);
-                    grid.appendChild(card);
-                    foundServices = true;
-                }
-            } else {
-                // Show individual services if filter is active
-                servicesSectionTitle.textContent = 'Matching Services';
-                let allMatchingServices = [];
-                for (const [key, data] of Object.entries(serviceData)) {
-                    const matching = data.services.filter(service => 
-                        service.name.toLowerCase().includes(filterText.toLowerCase()) ||
-                        data.name.toLowerCase().includes(filterText.toLowerCase()) // Also search by category name
-                    );
-                    matching.forEach(service => {
-                        allMatchingServices.push({ ...service, categoryKey: key, categoryName: data.name });
-                    });
-                }
-
-                if (allMatchingServices.length > 0) {
-                    allMatchingServices.forEach(service => {
-                        const card = document.createElement('div');
-                        card.className = 'service-card';
-                        card.dataset.category = service.categoryKey;
-                        card.innerHTML = `<div class="service-icon"><i class="fas ${service.icon}"></i></div><div class="service-name">${service.name}</div>`;
-                        card.onclick = () => openProcessModal(service.categoryKey, service.name);
-                        grid.appendChild(card);
-                        foundServices = true;
-                    });
-                }
-            }
-
-            if (!foundServices) {
-                noServicesFound.style.display = 'block';
-            } else {
-                noServicesFound.style.display = 'none';
-            }
+    if (filterText === '') {
+        // Show categories if no filter
+        for (const [key, data] of Object.entries(serviceData)) {
+            const card = document.createElement('div');
+            card.className = 'service-card';
+            card.dataset.category = key;
+            card.innerHTML = `<div class="service-icon"><i class="fas ${data.icon}"></i></div><div class="service-name">${data.name}</div>`;
+            card.onclick = () => openServiceModal(key);
+            grid.appendChild(card);
+            foundServices = true;
+        }
+    } else {
+        // Show individual services if filter is active
+        let allMatchingServices = [];
+        for (const [key, data] of Object.entries(serviceData)) {
+            const matching = data.services.filter(service => 
+                service.name.toLowerCase().includes(filterText.toLowerCase()) ||
+                data.name.toLowerCase().includes(filterText.toLowerCase())
+            );
+            matching.forEach(service => {
+                allMatchingServices.push({ ...service, categoryKey: key, categoryName: data.name });
+            });
         }
 
-        function filterServices(event) {
-            const filterText = event.target.value;
-            populateServiceCards(filterText);
+        if (allMatchingServices.length > 0) {
+            allMatchingServices.forEach(service => {
+                const card = document.createElement('div');
+                card.className = 'service-card';
+                card.dataset.category = service.categoryKey;
+                card.innerHTML = `<div class="service-icon"><i class="fas ${service.icon}"></i></div><div class="service-name">${service.name}</div>`;
+                card.onclick = () => openProcessModal(service.categoryKey, service.name);
+                grid.appendChild(card);
+                foundServices = true;
+            });
         }
+    }
+
+    if (!foundServices) {
+        noServicesFound.style.display = 'block';
+    } else {
+        noServicesFound.style.display = 'none';
+    }
+}
+
+// Search functionality for explore
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('exploreServiceSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', function(event) {
+            populateExploreServices(event.target.value);
+        });
+    }
+});
         
         // --- Modal Content & Management ---
         function setupModalContent() {
