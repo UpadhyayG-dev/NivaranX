@@ -4580,6 +4580,9 @@ function updateThemeIcon(theme) {
                     document.getElementById('profileModal').classList.add('active');
                 } else if (target === 'discover') {
                     document.getElementById('discoverModal').classList.add('active');
+                } else if (target === 'explore') {
+                    populateExploreServices();
+                    document.getElementById('exploreModal').classList.add('active');
                 } else if (target === 'updates') {
                     document.getElementById('updatesModal').classList.add('active');
                 }
