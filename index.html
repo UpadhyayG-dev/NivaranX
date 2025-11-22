@@ -485,10 +485,10 @@
         .receipt-value { font-weight: 600; }
         .receipt-actions { display: grid; gap: 12px; }
 
-        /* --- Discover Modal --- */
-        .discover-card { background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px; margin-bottom: 20px; }
-        .discover-card h3 { font-size: 1.2rem; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-        .discover-card p { font-size: 0.9rem; opacity: 0.8; line-height: 1.6; }
+        /* --- About Modal --- */
+        .about-card { background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px; margin-bottom: 20px; }
+        .about-card h3 { font-size: 1.2rem; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .about-card p { font-size: 0.9rem; opacity: 0.8; line-height: 1.6; }
         .founder-profile { display: flex; align-items: center; gap: 20px; }
         .founder-profile img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
         .founder-info h4 { font-size: 1.3rem; margin-bottom: 5px; }
@@ -1388,8 +1388,8 @@ body {
     <div class="modal" id="loginModal">
         <div class="modal-content" id="loginModalContent"></div>
     </div>
-    <div class="modal" id="discoverModal">
-        <div class="modal-content" id="discoverModalContent"></div>
+    <div class="modal" id="aboutModal">
+        <div class="modal-content" id="aboutModalContent"></div>
     </div>
 <div class="modal" id="exploreModal">
     <div class="modal-content" id="exploreModalContent">
@@ -1482,9 +1482,9 @@ body {
             <div class="nav-icon"><i class="fas fa-home"></i></div>
             <span class="nav-label">Dashboard</span>
         </a>
-        <a href="#" class="nav-item" data-target="discover">
-            <div class="nav-icon"><i class="fas fa-compass"></i></div>
-            <span class="nav-label">Discover</span>
+        <a href="#" class="nav-item" data-target="about">
+            <div class="nav-icon"><i class="fas fa-info-circle-outline"></i></div>
+            <span class="nav-label">About</span>
         </a>
         <a href="#" class="nav-item" data-target="explore">
             <div class="nav-icon"><i class="fas fa-infinity"></i></div>
@@ -2824,14 +2824,14 @@ body {
                 "From the home screen, you can access all major service categories like National, State, Tax & Finance, and more. It's designed for quick and easy navigation to any government service.",
                 "The home page also highlights key initiatives and provides a seamless entry point to explore all the services NIVARANX offers."
             ],
-            discover_info: [
-                "The 'Discover' section provides insights into NIVARANX, including our mission, vision, and values. You can learn about our founder, Rishu Raj Upadhyay, and find our contact details and office location.",
+            about_info: [
+                "The 'About' section provides insights into NIVARANX, including our mission, vision, and values. You can learn about our founder, Rishu Raj Upadhyay, and find our contact details and office location.",
                 "This section is where you can understand the 'why' behind NIVARANX and our commitment to making government services accessible. It includes information about our initiative by UPADHYAYG.",
-                "Explore the 'Discover' section to get a deeper understanding of our organization, our core principles, and how to reach out to us for support or collaboration."
+                "Explore the 'About' section to get a deeper understanding of our organization, our core principles, and how to reach out to us for support or collaboration."
             ],
             default: [
                 "I'm sorry, I didn't understand that. Could you please rephrase your question or ask about a specific service?",
-                "I'm still learning and improving. Could you try asking that in a different way or choose from common topics like 'services', 'benefits', 'contact', 'updates', 'profile', 'home', or 'discover'?",
+                "I'm still learning and improving. Could you try asking that in a different way or choose from common topics like 'services', 'benefits', 'contact', 'updates', 'profile', 'home', or 'about'?",
                 "I'm not sure how to respond to that. Perhaps you could ask me about 'NIVARANX', 'founder', 'documents', or any specific service name?"
             ]
         };
@@ -2990,34 +2990,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div id="auth-container"></div>`;
             
-            document.getElementById('discoverModalContent').innerHTML = `
+            document.getElementById('aboutModalContent').innerHTML = `
                 <div class="modal-header">
                     <h2 class="modal-title"><i class="fas fa-info-circle"></i> NIVARANX के बारे में</h2>
                     <button class="close-modal" onclick="closeAllModals()">&times;</button>
                 </div>
-                <div class="discover-card founder-profile">
+                <div class="about-card founder-profile">
                     <img src="https://img1.wsimg.com/isteam/ip/e8186a9b-5cfd-4d09-9ac8-87df4de0cc9e/file_00000000a1bc61f7baf84e5d1ec8a904.png/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:1024,cg:true" alt="संस्थापक और सीईओ ऋषु राज उपाध्याय">
                     <div class="founder-info">
                         <h4>ऋषु राज उपाध्याय</h4>
                         <p>संस्थापक और सीईओ, UPADHYAYG</p>
                     </div>
                 </div>
-                <div class="discover-card">
+                <div class="about-card">
                     <p class="founder-bio">"डिजिटल इंडिया के सपने को साकार करने के लिए, मैंने NIVARANX की स्थापना की, ताकि हर नागरिक तक तकनीक पहुंचे और शासन पारदर्शी, सुलभ और तत्काल बने।"</p>
                 </div>
-                <div class="discover-card">
+                <div class="about-card">
                     <h3><i class="fas fa-calendar-alt"></i> स्थापना</h3>
                     <p>NIVARANX की स्थापना <strong>19 जुलाई 2025</strong> को हुई थी।</p>
                 </div>
-                <div class="discover-card">
+                <div class="about-card">
                     <h3><i class="fas fa-bullseye"></i> हमारा मिशन</h3>
                     <p>हर भारतीय को एक एकीकृत मंच प्रदान करके सशक्त बनाना, जिससे 'भरोसा, सेवा, सफलता' का भविष्य बनाया जा सके।</p>
                 </div>
-                <div class="discover-card">
+                <div class="about-card">
                     <h3><i class="fas fa-binoculars"></i> हमारा विजन</h3>
                     <p>भारत का सबसे विश्वसनीय डिजिटल प्लेटफॉर्म बनना, जो हर नागरिक के लिए आवश्यक सेवाओं तक पहुंच को सरल बनाता है।</p>
                 </div>
-                <div class="discover-card">
+                <div class="about-card">
                     <h3><i class="fas fa-lightbulb"></i> हमारे मूल्य</h3>
                     <ul>
                         <li><strong>पारदर्शिता:</strong> सभी प्रक्रियाओं में स्पष्टता और ईमानदारी।</li>
@@ -3027,7 +3027,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <li><strong>नागरिक-केंद्रित:</strong> नागरिकों की जरूरतों को प्राथमिकता देना।</li>
                     </ul>
                 </div>
-                <div class="discover-card">
+                <div class="about-card">
                     <h3><i class="fas fa-building"></i> मुख्य कार्यालय</h3>
                     <p><strong>UPADHYAYG</strong><br>नवीनगर, औरंगाबाद,<br>बिहार, भारत - 824302</p>
                     <div class="map-placeholder">
@@ -4338,9 +4338,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 return randomResponse(chatbotKnowledge.home_info);
             }
 
-            // Check for discover questions
-            if (lowerMsg.includes('discover') || lowerMsg.includes('mission') || lowerMsg.includes('vision') || lowerMsg.includes('values')) {
-                return randomResponse(chatbotKnowledge.discover_info);
+            // Check for about questions
+            if (lowerMsg.includes('about') || lowerMsg.includes('mission') || lowerMsg.includes('vision') || lowerMsg.includes('values')) {
+                return randomResponse(chatbotKnowledge.about_info);
             }
             
             // If no specific match, use default response
@@ -4491,8 +4491,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (target === 'profile') {
                     renderProfileModal();
                     document.getElementById('profileModal').classList.add('active');
-                } else if (target === 'discover') {
-                    document.getElementById('discoverModal').classList.add('active');
+                } else if (target === 'about') {
+                    document.getElementById('aboutModal').classList.add('active');
                 } else if (target === 'explore') {
                     populateExploreServices();
                     document.getElementById('exploreModal').classList.add('active');
